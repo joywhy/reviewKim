@@ -118,20 +118,21 @@ article {
   position: sticky;
   top: 0;
   padding-top: 50px;
-  /* background-color:#e4e4e4; */
-
-  /* box-sizing: border-box;
-    border: 1px solid; */
 }
 article .slide {
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0);
+  /* overflow: hidden; */
 }
 article .slide .slideContainer {
+  display: flex;
+  flex-wrap: nowrap;
 }
 article .slide .progressBar {
   margin-top: 25px;
   position: relative;
+  width: 100%;
+  /* overflow-x: hidden; */
 }
 article .slide .progressBar img {
   position: absolute;
@@ -142,6 +143,7 @@ article .slide .progressBar img.progressLine {
 }
 
 .articleTitle {
+  /* overflow-y: hidden; */
   margin-top: 28px;
   /* border: 1px solid red; */
   position: relative;
