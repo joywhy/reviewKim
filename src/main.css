@@ -6,11 +6,15 @@ html {
     --color-gray: #FCFCFC;
     --color-gray-10: #E9E9E9;
 
+     --color-point :#D6535D;
+
+
     --color-gray-20: #b0b0b0;
     --color-gray-30: #808080;
     --color-gray-40: #555555;
     --color-win :#A2BC00;
     --color-lose :#E67A29;
+
   }
   body {
     position: relative;
@@ -53,7 +57,14 @@ html {
     font-size: 16px;
     font-weight: bold;
   }
-  
+  button.dangerBtn {
+    border: 1px solid var(--color-point);
+    color: var(--color-point);
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 4px;
+  }
   /* header */
   header{
     position: fixed;
@@ -108,12 +119,35 @@ html {
     position: sticky;
     top:0;
     margin-top: 50px;
-    background-color:#e4e4e4;
+    /* background-color:#e4e4e4; */
 
     /* box-sizing: border-box;
     border: 1px solid; */
   }
+  article .slide {
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 0, 0, 0);
+  }
+  article .slide .slideContainer{}
+  article .slide .progressBar{
+    margin-top: 25px;
+    position: relative;
+  }
+  article .slide .progressBar img{
+    position: absolute;
+  }
+  article .slide .progressBar img.progressLine{
+    position: absolute;
+    left: 150px;
+  }
 
+  .articleTitle  {
+    margin-top: 28px;
+    border: 1px solid red;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
   section {
     /* flex-grow: 3; */
     width: 757px;
