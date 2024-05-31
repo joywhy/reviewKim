@@ -142,14 +142,14 @@
       this[globalName] = mainExports;
     }
   }
-})({"aCKrX":[function(require,module,exports) {
+})({"fpiP1":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = true;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
 var HMR_USE_SSE = false;
-module.bundle.HMR_BUNDLE_ID = "0907ca6d3464ddca";
+module.bundle.HMR_BUNDLE_ID = "bb17daba02859b96";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -583,8 +583,79 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     });
 }
 
-},{}],"j4kuM":[function(require,module,exports) {
+},{}],"82qUm":[function(require,module,exports) {
+// const CLIENT_ID = "105140587367-9vopq2ppro5udibmfcvv0l4rbslrq9qq.apps.googleusercontent.com";
+// const SECRET_KEY ="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";
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "loginGoogleOauth", ()=>loginGoogleOauth);
+async function loginGoogleOauth(CLIENT_ID, SECRET_KEY, REDIRECT_URL = "https://api.seu.ai/login/google/", STATE = "iLOVEPPANG") {
+    open(`https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&include_granted_scopes=true&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=code&state=${STATE}&scope=https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.emails.read`);
+}
+function decodeJwtResponse(token) {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    //decodeURIComponent  ?
+    var jsonPayload = decodeURIComponent(window.atob(base64).split("").map(function(c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(""));
+    return JSON.parse(jsonPayload);
+}
+//처음 실행하는 함수
+function init(CLIENT_ID) {
+    google.accounts.id.initialize({
+        client_id: CLIENT_ID,
+        callback ({ credential }) {
+            const responsePayload = decodeJwtResponse(credential);
+            //  const userinfo = {
+            //   email: responsePayload.email,
+            //   nickname: naver_id_login.getProfileData('nickname'),
+            //   age: naver_id_login.getProfileData('age'),
+            //   id :responsePayload.sub,
+            //   fullName: responsePayload.name,
+            //   giveName: responsePayload.given_name,
+            //   familyName : responsePayload.family_name,
+            //   profileImg : responsePayload.picture
+            //  };
+            return responsePayload;
+        }
+    });
+    google.accounts.id.prompt((notification)=>{
+        console.log(notification);
+        notification.isNotDisplayed() || notification.isSkippedMoment();
+    });
+}
 
-},{}]},["aCKrX","j4kuM"], "j4kuM", "parcelRequire1c7f")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"fD7H8"}],"fD7H8":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
-//# sourceMappingURL=reviewKim.3464ddca.js.map
+},{}]},["fpiP1"], null, "parcelRequire1c7f")
+
+//# sourceMappingURL=google-oauth.02859b96.js.map

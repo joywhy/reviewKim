@@ -13,6 +13,34 @@
       crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
     />
+    <script src="main.js" defer></script> 
+    <script src="//dev.seu.ai/conf.js" async></script>
+    <script>
+      addEventListener('await oauth', ({ detail }) => {
+        console.log(detail);
+      });
+
+      onload = async () => {
+        //네이버
+        const { loginNaverOauth } = await import('./src/api/naver-oauth.js');
+
+        const naverBtn = document.getElementById('naver-oauth');
+        naverBtn.addEventListener('click', function () {
+          const res = loginNaverOauth('zVhxXT6bnKTe2u6CE_LS', 'rS9t1Y77iB');
+        });
+
+        //구글
+        const { loginGoogleOauth } = await import('./src/api/google-oauth.js');
+        const googleBtn = document.getElementById('google-oauth');
+        googleBtn.addEventListener('click', function () {
+          const CLIENT_ID =
+            '105140587367-9vopq2ppro5udibmfcvv0l4rbslrq9qq.apps.googleusercontent.com';
+          const SECRET_KEY = 'f9157a07a459e5d9a84fc8fe239960db';
+          const res = loginGoogleOauth(CLIENT_ID, SECRET_KEY);
+        });
+
+      };
+    </script>
   </head>
   <body>
     <header>
@@ -26,7 +54,24 @@
 
         <div class="rightSide center">
           <a href="">비즈니스 문의</a>
-          <button class="mainBtn login">로그인</button>
+          <button class="mainBtn login" id="login">로그인</button>
+
+          <div id="modalWrap"> 
+            <div id="modalBody">
+              <span id="closeBtn">&times;</span> 
+              
+                <img src="./src/img/logo_en_reviewKim.svg"/>
+              
+                <button id="naver-oauth">
+                  <img src="./src/img/naverloginbutton.svg" alt="네이버로그인">
+                </button>
+
+                <button id="google-oauth">
+                  <img src="./src/img/googleloginbutton.svg" alt="구글로그인">
+                </button>              
+            </div>
+          </div>
+
         </div>
       </div>
     </header>

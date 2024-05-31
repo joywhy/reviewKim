@@ -9,8 +9,6 @@ html {
   --color-gray-50: #555;
   --color-gray-70: #343434;
   --color-point: #d6535d;
-  --color-win: #a2bc00;
-  --color-lose: #e67a29;
 }
 
 body {
@@ -43,6 +41,7 @@ body {
 
 button {
   border: 1px solid var(--color-gray-10);
+  background-color: #fff;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -102,6 +101,51 @@ header .logo > img:nth-child(2) {
 
 .rightSide > button.mainBtn {
   margin-left: 20px;
+}
+
+#modalWrap {
+  z-index: 1;
+  backdrop-filter: blur(5px);
+  background-color: #00000076;
+  width: 100%;
+  height: 100%;
+  padding-top: 100px;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: auto;
+}
+
+#modalBody {
+  background-color: #fff;
+  border-radius: 20px;
+  width: 400px;
+  height: 600px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+#modalBody img {
+  margin-top: 20px;
+}
+
+#closeBtn {
+  float: right;
+  color: #777;
+  cursor: pointer;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#modalBody button {
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+#modalBody button#naver-oauth {
+  margin-top: 140px;
 }
 
 main {
@@ -171,6 +215,10 @@ article .slide .progressBar img.progressLine {
   justify-content: left;
   align-items: center;
   display: flex;
+}
+
+.articleTitle .dangerBtn {
+  background-color: #fff;
 }
 
 .articleTitle h2 span {
