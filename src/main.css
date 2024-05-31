@@ -3,9 +3,11 @@ html {
   --color-black: #000000;
   --color-white: #ffffff;
   --color-main: #3cb15a;
+  --color-main-10:#2A9A64;
+
   --color-gray: #fcfcfc;
   --color-gray-10: #e9e9e9;
-  --color-gray-30: #b0b0b0;
+  --color-gray-30: #B0B0B0;
   --color-gray-50: #555555;
   --color-gray-70: #343434;
   --color-point: #d6535d;
@@ -13,16 +15,10 @@ html {
   --color-win: #a2bc00;
   --color-lose: #e67a29;
 }
-* {
-  font-family: 'Pretendard Variable', Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
-    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-}
 body {
+  font-size: 12px;
   position: relative;
   background-color: var(--color-white);
-  font-family: 'Roboto', sans-serif;
   line-height: 1.4;
   color: var(--color-black);
 }
@@ -40,6 +36,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
 }
 .shadowBox {
   box-shadow: 0 3px 20px rgba(0, 0, 0, 0.075), 0 3px 20px rgba(0, 0, 0, 0.069);
@@ -60,6 +57,9 @@ button.mainBtn {
   font-size: 16px;
   font-weight: bold;
 }
+button.mainBtn:hover {
+  background-color: var(--color-main-10);
+}
 button.dangerBtn {
   border: 1px solid var(--color-point);
   color: var(--color-point);
@@ -68,6 +68,11 @@ button.dangerBtn {
   border-radius: 5px;
   padding: 4px;
 }
+.subTitle_20 {
+  font-size: 16px;
+  font-weight: ExtraBold;
+}
+
 /* header */
 header {
   position: fixed;
@@ -79,19 +84,17 @@ header {
   padding-top: 62px;
   background-color: var(--color-white);
   box-sizing: border-box;
-  /* border: 1px solid red; */
+
 }
 header > .container {
   position: relative;
   display: flex;
   justify-content: space-between;
-
   box-sizing: border-box;
-  /* border: 1px solid red; */
 }
-header logo {
+header .logo {
 }
-header logo > img:nth-child(2) {
+header .logo > img:nth-child(2) {
   margin-left: 10px;
 }
 
@@ -101,23 +104,23 @@ header logo > img:nth-child(2) {
 
 /* main */
 main {
-  /* position: absolute; */
-  top: 113px;
   display: flex;
+  position: relative;
+  height: 2500px;
   justify-content: space-between;
-  height: 2000px;
-  /* border: 1px solid red; */
+
 }
-/* article  dfd*/
+/* article */
 article {
   position: sticky;
+  /* width: 500px; */
   width: 377px;
-  height: 700px;
+  height: 850px;
   overflow: auto;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  padding-top: 50px;
+  padding-top: 150px;
 }
 article .slide {
   box-sizing: border-box;
@@ -125,9 +128,27 @@ article .slide {
   /* overflow: hidden; */
 }
 article .slide .slideContainer {
+  position: relative;
+  width: 100%;
+  height: 275px;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+article .slide .slideContainer .imgContainer{
+  position: absolute;
+  top:0;
+  left: -770px;
+  /* 375 + 10  -385px  -770px -1155px*/
   display: flex;
   flex-wrap: nowrap;
+  position: absolute;
+
 }
+article .slide .slideContainer .imgContainer img {
+ margin-right: 10px;
+ }
+
 article .slide .progressBar {
   margin-top: 25px;
   position: relative;
@@ -201,16 +222,16 @@ article ul li:first-child {
 }
 article .buttonList {
   display: flex;
-  /* justify-content: space-between; */
+  height: 42px;
   align-items: center;
   margin-top: 30px;
 }
 article .buttonList button {
   font-size: 13px;
   font-weight: ExtraBold;
-  /* color: var(--color-gray-70); */
-  /* flex-grow: 1; */
-  margin-right: 10px;
+  height: 100%;
+  padding: 10px;
+  margin-right: 5px;
 }
 article .buttonList .shareBtn img {
   margin-right: 5px;
@@ -220,10 +241,222 @@ article .buttonList .mainBtn {
   margin-right: 0px;
 }
 section {
-  width: 757px;
-  height: 1200px;
-  padding-top: 50px;
+  position: relative;
+  /* flex-grow: 1; */
+  width: 730px;
+  height: 2400px;
+  margin-left: 0px;
+  padding-top: 150px;
+  padding-left: 20px;
   border-left: 1px solid var(--color-gray-10);
 }
+section .title {}
+section .title .buttonList{
+  height: 27px;
+  display: flex;
+  justify-content: left;
+}
+section .title button{
+  height: 27px;
+  background-color: var(--color-gray-10);
+  font-size: 13px;
+  font-weight: bold;
+}
+section .title .mainBtn{
+  width: 32px;
+  background-color: var(--color-main);
+  border-radius: 8px;
+  font-weight: Semibold;
+  margin-right: 5px;
+}
+section .title h1 {
+  margin-top: 23px;
+  font-size: 20px;
+  font-weight: ExtraBold;
+  color: var(--color-gray-70);
+}
+section .title p {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: SemiBold;
+  color: var(--color-gray-50);
+}
+section  dl.serve{
+  margin-top: 65px;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+section  dl.serve dd {
+  font-weight: normal;
+}
+section dt {
+  width: 135px;
+  font-size: 16px;
+  font-weight: bold;
+  height: 63px;
+}
+section dd {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--color-gray-50);
 
+}
+section dl dd ul li {
+  line-height: 20px;
+}
+section dl.serve dd ul li::before {
+  content : '- ';
+}
+section dl.keyword {
+  margin-top: 25px;
+}
+
+section dl.keyword  dd {
+  display: flex;
+font-size: 13px;
+font-weight: bold;
+
+}
+section dl.keyword  dd .tag {
+  color: var(--color-gray-70);
+  background-color:  #f2f2f2;
+  /* var(--color-gray); */
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin-left: 15px;
+}
+section dl.keyword  dd .tag::before {
+  content: "# ";
+}
+
+section dl.guide dt{
+height: 560px;
+}
+section dl.guide dd {
+  font-size: 16px;
+  line-height: 30px;
+}
+section .dangerText {
+  color:var(--color-point);
+}
+section .announcementDate span {
+margin-left: 10px;
+line-height: 35px;
+}
+section .participation {
+  display: flex;
+font-size: 14px;
+font-weight: SemiBold;
+}
+section .participation h3 {
+  width: 150px;
+  font-size: 16px;
+}
+section .participation .tagContainer{
+display: flex;
+  
+}
+section .participation .tagContainer .tag{
+  font-size: 13px;
+  font-weight: bold;
+  padding: 3px 8px;
+  margin-right: 10px;
+  background-color: #f1f1f165;
+  border-radius: 5px;
+}
+section .participation .des {
+  font-size: 13px;
+  font-weight: normal;
+}
+.coffee {
+ margin-top: 40px;
+ font-weight: normal;
+/* border: 1px solid rebeccapurple; */
+}
+.coffee ul li {
+  list-style-type: disc;
+  margin-left: 150px;
+  line-height: 35px;
+}
+.cocktail {
+  font-weight: normal;
+}
+.cocktail ul li {
+
+  list-style-type: disc;
+  margin-left: 150px;
+  line-height: 35px;
+}
+.parking {
+  margin: 20px 0px;
+  font-weight: normal;
+  
+}
+section dl.place {
+margin-top: 20px;  
+}
+section dl.place dt {
+  height: 500px;
+  /* border: 1px solid red; */
+  color: var(--color-gray-70);
+} 
+section dl.place dd .address{
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: var(--color-gray-50);
+}
+section dl.place dd .address:nth-of-type(2){
+  margin: 10px 0px;
+}
+section dl.place dd .address button {
+  font-size: 13px;
+  border: 1px solid var(--color-gray-30);
+  background-color: white;
+  color: var(--color-gray-50);
+  padding: 1px 3px;
+  margin-right: 10px;
+}
+section dl.place dd .address  span {
+  margin-left: 5px;
+  color: var(--color-main);
+}
+section .map {
+  width: 490px;
+  height: 400px;
+  border: 1px solid gray;
+  position: relative;
+  left: 135px;
+  /* background-color: #555555; */
+}
 /* footer */
+footer {
+  position: relative;
+  width: 100%;
+  height: 345px;
+  border-top: 1px solid var(--color-gray-10);
+}
+footer .topFooter {
+  font-size: 10px;
+  height: 150px;
+}
+footer .topFooter h4 {
+  margin-top: 40px;
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--color-gray-50);
+  /* border: 1px solid red; */
+}
+footer .bottomFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  color:var(--color-gray-50);
+}
+footer .bottomFooter h6{
+  margin-bottom: 10px;
+ }
+ footer .bottomFooter .copyright {
+  margin-top: 10px;
+ }
