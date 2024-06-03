@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="//seu.ai/$.css">
-    <link rel="stylesheet" href="/index.af20ad6e.css">
-    <link rel="stylesheet" as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-    <script src="/index.c4775257.js" defer=""></script> 
-    <script src="//dev.seu.ai/conf.js" async=""></script>
-    <script>// modules are defined as an array
+// modules are defined as an array
 // [ module function, map of requires ]
 //
 // map of requires is short require name -> numeric require
@@ -153,14 +142,14 @@
       this[globalName] = mainExports;
     }
   }
-})({"2d2CM":[function(require,module,exports) {
+})({"8W2ye":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = true;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
 var HMR_USE_SSE = false;
-module.bundle.HMR_BUNDLE_ID = "759ac93ad6352eaa";
+module.bundle.HMR_BUNDLE_ID = "26170a8763aff760";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -594,57 +583,45 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     });
 }
 
-},{}],"1NUon":[function(require,module,exports) {
-addEventListener("await oauth", ({ detail })=>{
-    const isSucceded = detail.userInfo.message === "success";
-    console.log(detail);
-    if (isSucceded) setCookies(detail);
-});
-function popup(url = "", width = 900, height = outerHeight) {
-    const options = `top=20, left=${(outerWidth - width) / 2}, width=${width}, height=${height}, status=no, menubar=no, toolbar=no, resizable=no,scrollbars=yes,popup=yes`;
-    window.open(url, "_blank", options);
-}
-function setCookies(detail) {
-    //리팩토링 예정 setCookies 와 로그인타입별 객체 스타일 통합
-    const access_token = detail.token;
-    const id = detail.userInfo.response.id;
-    const nickname = detail.userInfo.response.nickname;
-    const profile_image = detail.userInfo.response.profile_image;
-    document.cookie = `access_token=${access_token}`;
-    document.cookie = `id=${id}`;
-    document.cookie = `nickname=${nickname}`;
-    document.cookie = `profile_image=${profile_image}`;
-}
-onload = async ()=>{
-    //네이버
-    const { getURLnaverLogin } = await require("2568884e5833e632");
-    const naverBtn = document.getElementById("naver-oauth");
-    const modal = document.getElementById("modalWrap");
-    naverBtn.addEventListener("click", function() {
-        const CLIENT_ID = "zVhxXT6bnKTe2u6CE_LS";
-        const url = getURLnaverLogin(CLIENT_ID);
-        popup(url, 1000);
-        modal.style.display = "none";
-    });
-    //구글
-    const { getURLgoogleLogin } = await require("2b66a8f15eddf03c");
-    const googleBtn = document.getElementById("google-oauth");
-    googleBtn.addEventListener("click", function() {
-        const CLIENT_ID = "105140587367-9vopq2ppro5udibmfcvv0l4rbslrq9qq.apps.googleusercontent.com";
-        const url = getURLgoogleLogin(CLIENT_ID);
-        console.log(url);
-        popup(url, 1000);
-        modal.style.display = "none";
-    });
+},{}],"adjPd":[function(require,module,exports) {
+const btn = document.getElementById("login");
+const modal = document.getElementById("modalWrap");
+const closeBtn = document.getElementById("closeBtn");
+btn.onclick = function() {
+    modal.style.display = "block";
 };
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+};
+window.onclick = function(event) {
+    if (event.target == modal) modal.style.display = "none";
+};
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+const { getCookie } = await require("5e95fe24cac06b72");
+const isLogin = getCookie(nickname);
+const headerRightSide = document.getElementsByClassName("rightSide");
+if (isLogin) {
+    //로그인시 header > rightSide  디자인
+    const username = getCookie(nickname);
+    const profile_image = getCookie(profile_image);
+//  headerRightSide.innerHtml ='';
+//  headerRightSide.innerHtml =`
+//  <img src=${profile_image} alt ="프로필사진"/>
+//   <span>${username}님</span>
+//   <button class="logout" id="logout">로그아웃</button>
+//    `;
+} // export {getCookie} ;
 
-},{"2568884e5833e632":"eZlzT","2b66a8f15eddf03c":"4FIps"}],"eZlzT":[function(require,module,exports) {
-module.exports = require("6bb178254b57024d")(require("52458c2c1784b59c").getBundleURL("a60pL") + "naver-oauth.852a7cfc.js" + "?" + Date.now()).catch((err)=>{
+},{"5e95fe24cac06b72":"8V2qZ"}],"8V2qZ":[function(require,module,exports) {
+module.exports = require("52ff7af0ce65e572")(require("c7285c826b24bba1").getBundleURL("3gKDs") + "main.63aff760.js" + "?" + Date.now()).catch((err)=>{
     delete module.bundle.cache[module.id];
     throw err;
-}).then(()=>module.bundle.root("9OQxq"));
+}).then(()=>module.bundle.root("adjPd"));
 
-},{"6bb178254b57024d":"aUGG2","52458c2c1784b59c":"95GEp"}],"aUGG2":[function(require,module,exports) {
+},{"52ff7af0ce65e572":"aUGG2","c7285c826b24bba1":"95GEp"}],"aUGG2":[function(require,module,exports) {
 "use strict";
 var cacheLoader = require("8a9e5d53130b603a");
 module.exports = cacheLoader(function(bundle) {
@@ -741,263 +718,6 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"4FIps":[function(require,module,exports) {
-module.exports = require("dde46c7d62fb1bf4")(require("40b24f09c41ec812").getBundleURL("a60pL") + "google-oauth.02859b96.js" + "?" + Date.now()).catch((err)=>{
-    delete module.bundle.cache[module.id];
-    throw err;
-}).then(()=>module.bundle.root("82qUm"));
+},{}]},["8W2ye"], null, "parcelRequire1c7f")
 
-},{"dde46c7d62fb1bf4":"aUGG2","40b24f09c41ec812":"95GEp"}]},["2d2CM","1NUon"], "1NUon", "parcelRequire1c7f")
-
-</script>
-  </head>
-  <body>
-  
-    <header>
-      <div class="container">
-        <h1>
-          <a href="/" class="center logo">
-            <img src="/logo_kor_reviewKim.6350e4d8.svg" alt="리뷰킴">
-            <img src="/logo_en_reviewKim.d349f4b5.svg" alt="reviewkim">
-          </a>
-        </h1>
-
-        <div class="rightSide center">
-          <a href="">비즈니스 문의</a>
-          <button class="mainBtn login" id="login">로그인</button>
-
-          <div id="modalWrap"> 
-            <div id="modalBody">
-              <span id="closeBtn">&times;</span> 
-              
-                <img src="/logo_en_reviewKim.d349f4b5.svg">
-              
-                <button id="naver-oauth">
-                  <img src="/naverloginbutton.9bed2e5b.svg" alt="네이버로그인">
-                </button>
-
-                <button id="google-oauth">
-                  <img src="/googleloginbutton.fdb9cc2a.svg" alt="구글로그인">
-                </button>              
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </header>
-
-    <main class="container">
-      <article>
-        <div class="slide">
-          <div class="slideContainer">
-            <div class="imgContainer">
-            <img src="/slide_makingCocktail_01.191f2d11.jpg" alt="칵테일제조사진">
-            <img src="/slide_makingCocktail_02.cb12a8d1.jpg" alt="칵테일제조사진">
-            <img src="/slide_makingCocktail_03.4b075ca0.jpg" alt="칵테일제조사진">
-            <img src="/slide_makingCocktail_04.da19af4d.jpg" alt="칵테일제조사진">
-            <img src="/slide_makingCocktail_05.39fcb390.jpg" alt="칵테일제조사진">
-          </div>
-          </div>
-          <div class="progressBar">
-            <img src="/line1.1e7b9a91.svg">
-            <img class="progressLine" src="/line2.83fa9c79.svg">
-          </div>
-        </div>
-
-        <div class="articleTitle">
-          <h2>
-            <button class="dangerBtn">마감임박</button>
-            <span> 03일 10:16:56 남음</span>
-          </h2>
-
-          <div class="recruitment">
-            <img src="/users.ae05811c.svg" alt="모집인원아이콘">
-            <p>0</p>
-            <span>/30</span>
-          </div>
-        </div>
-        <ul>
-          <li>
-            <h3>모집 마감</h3>
-            <p>-6.25</p>
-          </li>
-          <li>
-            <h3>뷰어 발표</h3>
-            <p>6.20 - 6.25</p>
-          </li>
-          <li>
-            <h3>등록 기간</h3>
-            <p>6.24 - 7.10</p>
-          </li>
-          <li>
-            <h3>리뷰 마감</h3>
-            <p>7.11</p>
-          </li>
-        </ul>
-        <div class="buttonList">
-          <button class="shareBtn">
-            <img src="/share.9655cc6f.svg" alt="공유하기">
-            공유하기
-          </button>
-
-          <button class="likeBtn">
-            <img src="/like.ee660e94.svg" alt="좋아요">
-          </button>
-
-          <button>문의</button>
-          <button class="mainBtn">신청</button>
-        </div>
-      </article>
-
-      <section>
-        <div class="title">
-          <div class="buttonList">
-            <button class="mainBtn">B</button>
-            <button>방문형</button>
-          </div>
-          <h1>[경기 / 하남] 마이 논알콜 하이볼 리스트</h1>
-          <p>3가지 논알콜 하이볼 시연 및 시음</p>
-        </div>
-
-      
-            <dl class="serve">
-              <dt>제공 서비스</dt>
-              <dd>
-                <ul>
-                  <li>3가지 논알콜 하이볼 시연 및 시음</li>
-                  <li>나만의 하이볼 레시피 만들기(재료 제공)</li>
-                  <li>웰컴 커피 및 간단한 간식 제공</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <dl class="keyword">
-              <dt>키워드
-                <img src="/copyicon.b4316d58.svg" alt="키워드">
-              </dt>
-              <dd>
-                <div class="tag">하남데이트</div>
-                <div class="tag">하남카페</div>
-                <div class="tag">카페창업</div>
-                <div class="tag">하남가볼만한곳</div>
-                <div class="tag">커피머신기</div>
-              </dd>
-            </dl>
-
-            <dl class="guide">
-              <dt>안내</dt>
-              <dd>
-               <p>
-                <span class="dangerText">! 직접 매장에 예약하여 방문 후 리뷰를 작성하는 캠페인입니다 !</span>
-                 
-                
-                  </p><div class="announcementDate">
-                    뷰어 발표기간
-                    <span>6.20 - 6.25</span>
-                  </div>
-                 
-                  <div class="participation">
-                    <h3>참여 날짜 및 시간대</h3>
-                    <div>
-                    <div class="tagContainer">
-                      <div class="tag">6월24일</div>
-                      <div class="tag">6월25일</div>
-                      <div class="tag">6월26일</div>
-                      <div class="tag">6월27일</div>
-                      <div class="tag">6월28일</div>
-                    </div>
-                    - 1타임 오전 10:00 - 12:00 (총2시간)
-                    <br>
-                    - 2타임 오전 14:00 - 16:00 (총2시간)
-                    <br>
-                    <span class="des">*날짜 선택후 1타임과 2타임 중 택 1</span>
-                  </div>
-                  </div>
-        
-                 <div class="coffee">
-                  <h3 class="coffeeDes">☕️커피 기본 교육☕️</h3>
-                  내가 만들어보는 라떼와 아메리카노 
-                  <ul>
-                   <li>라떼 스티밍 체험</li>
-                   <li>에스프레소를 추출 후 아메리카노 & 라떼 시음 체험</li>
-                  </ul>
-                 </div>
-                 
-                <div class="cocktail">
-                  <h3>🥳논알콜로 즐기는 홈파티🎉</h3>
-                  논알콜 하이볼 시리즈! 논알콜 위스키 시럽을 활용한 음료 제조 체험
-                  <ul>
-                   <li>기본 시연 및 시음으로 3가지 음료</li>
-                   <li>재료들을 나열해두고 자기만의 하이볼 만들어서 모두와 함께 맛보고 의견나누기</li>
-                  </ul>
-                </div>
-
-                  <div class="parking">
-                    <h3>주차 지원 : 3시간</h3>
-                    신청시 한팀당 최대 2명(신청자 포함)입니다.🥰
-                   
-                  </div>
-                  <img src="/poster.d6671e85.png" alt="모집 공고 포스터">
-                 
-               
-                <p></p>
-              </dd>
-            </dl>
-
-
-            <dl class="place">
-              <dt>방문장소</dt>
-              <dd>
-                <div class="address">
-                  <button>도로명</button>
-                  경기 하남시 미사강변서로 22 에코큐브지식산업센터 B106호 
-                  <span>복사</span>
-                </div>
-
-                <div class="address">
-                  <button>지번</button>
-                  풍산동 490-1
-                  <span>복사</span>
-                </div>
-
-                <div class="map"></div>
-              </dd>
-            </dl>
-
-
-      </section>
-    </main>
-
-    <footer>
-      <div class="container">
-        <div class="topFooter"> 
-          <h4>070-7630-1111</h4>
-          평일 10:00 - 17:00 / 점심 시간 12:00 - 13:00
-          <br>
-          주말, 공휴일 제외
-        </div>
-
-        <div class="bottomFooter"> 
-
-          <div>
-          <h6>개인정보처리방침 | 이용약관</h6>
-          상호명: (주)리을컴퍼니 주소 :  경기 수원시 팔달구 고매로20번길 24  사업자등록번호: 000-00-00000
-          <br>
-          대표 : 박재천 이메일 :admin@lieul.com 
-          <div class="copyright">
-            Copyright  2023 ALL
-          </div>
-          </div>
-          
-          <a href="/">
-            <img src="/logo_kor_reviewKim.6350e4d8.svg" alt="리뷰 킴">
-            <img src="/logo_en_reviewKim.d349f4b5.svg" alt="reviewKim">
-          </a>
-      
-      </div>
-    
-  
-      </div>
-    </footer>
-  </body>
-</html>
+//# sourceMappingURL=main.63aff760.js.map

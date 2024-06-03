@@ -14,15 +14,13 @@
     />
     <script src="main.js" defer></script> 
     <script src="//dev.seu.ai/conf.js" async></script>
-    <script>
+    <script type="module" >
       addEventListener('await oauth', ({ detail }) => {
-
-        //구글 로그인시 detail.userInfo.message가 없음  수정 필요 
         const isSucceded = detail.userInfo.message === "success";
         console.log(detail);
       
         if(isSucceded){
-          // setCookies(detail);
+          setCookies(detail);
         }
       });
 
@@ -60,19 +58,25 @@
         });
 
         //구글
-        const { loginGoogleOauth } = await import('./src/api/google-oauth.js');
+        const { getURLgoogleLogin } = await import('./src/api/google-oauth.js');
         const googleBtn = document.getElementById('google-oauth');
+
         googleBtn.addEventListener('click', function () {
           const CLIENT_ID =
             '105140587367-9vopq2ppro5udibmfcvv0l4rbslrq9qq.apps.googleusercontent.com';
-          const SECRET_KEY = 'f9157a07a459e5d9a84fc8fe239960db';
-          const res = loginGoogleOauth(CLIENT_ID, SECRET_KEY);
+    
+          const url = getURLgoogleLogin(CLIENT_ID);
+          console.log(url);
+          popup(url,1000);
+
+          modal.style.display = 'none';
         });
 
       };
     </script>
   </head>
   <body>
+  
     <header>
       <div class="container">
         <h1>

@@ -586,10 +586,6 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"82qUm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-//   popup(url = '', width = 900, height = outerHeight){
-//     open(url, null, `width=${width},height=${height},left=${(outerWidth - width) / 2},resizable=no,scrollbars=yes,status=no;`);
-// }
-// //창의 화면 왼쪽에서의 위치를 지정합니다. 음수는 사용할 수 없습니다.
 // function decodeJwtResponse(token) {
 //   var base64Url = token.split('.')[1];
 //   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -631,9 +627,21 @@ parcelHelpers.defineInteropFlag(exports);
 //     }
 //   });
 // }
-parcelHelpers.export(exports, "loginGoogleOauth", ()=>loginGoogleOauth);
-async function loginGoogleOauth(CLIENT_ID, SECRET_KEY, REDIRECT_URL = "https://api.seu.ai/login/google/", STATE = "iLOVEPPANG") {
-    open(`https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&include_granted_scopes=true&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=code&state=${STATE}&scope=https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.emails.read`);
+parcelHelpers.export(exports, "getURLgoogleLogin", ()=>getURLgoogleLogin);
+function getURLgoogleLogin(CLIENT_ID, REDIRECT_URL = "https://api.seu.ai/login/google/", STATE = "iLOVEPPANG") {
+    const URL = "https://accounts.google.com/o/oauth2/v2/auth";
+    const scope = "https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.emails.read";
+    const queryParams = {
+        access_type: "offline",
+        include_granted_scopes: "true",
+        client_id: CLIENT_ID,
+        redirect_uri: REDIRECT_URL,
+        response_type: "code",
+        state: STATE,
+        scope: scope
+    };
+    const queryString = new URLSearchParams(queryParams).toString();
+    return `${URL}?${queryString}`;
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"aRELh"}],"aRELh":[function(require,module,exports) {
