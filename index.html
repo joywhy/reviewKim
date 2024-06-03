@@ -16,16 +16,47 @@
     <script src="//dev.seu.ai/conf.js" async></script>
     <script>
       addEventListener('await oauth', ({ detail }) => {
+
+        //구글 로그인시 detail.userInfo.message가 없음  수정 필요 
+        const isSucceded = detail.userInfo.message === "success";
         console.log(detail);
+      
+        if(isSucceded){
+          // setCookies(detail);
+        }
       });
+
+      function popup(url = '', width = 900, height = outerHeight){
+       const options = `top=20, left=${(outerWidth - width) / 2}, width=${width}, height=${height}, status=no, menubar=no, toolbar=no, resizable=no,scrollbars=yes,popup=yes`;
+        window.open(url, "_blank",options);
+      }
+
+      function setCookies(detail){
+        //리팩토링 예정 setCookies 와 로그인타입별 객체 스타일 통합
+          const access_token = detail.token;
+          const id = detail.userInfo.response.id;
+          const nickname = detail.userInfo.response.nickname;
+          const profile_image = detail.userInfo.response.profile_image;
+
+          document.cookie = `access_token=${access_token}`;
+          document.cookie = `id=${id}`;
+          document.cookie = `nickname=${nickname}`;
+          document.cookie = `profile_image=${profile_image}`;
+      }
 
       onload = async () => {
         //네이버
-        const { loginNaverOauth } = await import('./src/api/naver-oauth.js');
+        const { getURLnaverLogin } = await import('./src/api/naver-oauth.js');
 
         const naverBtn = document.getElementById('naver-oauth');
+        const modal = document.getElementById('modalWrap');
+
         naverBtn.addEventListener('click', function () {
-          const res = loginNaverOauth('zVhxXT6bnKTe2u6CE_LS', 'rS9t1Y77iB');
+          const CLIENT_ID =  'zVhxXT6bnKTe2u6CE_LS';
+          const url = getURLnaverLogin(CLIENT_ID);
+          popup(url,1000);
+
+          modal.style.display = 'none';
         });
 
         //구글

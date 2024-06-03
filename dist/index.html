@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="//seu.ai/$.css">
-    <!-- <link rel="stylesheet" href="./src/reset.css" /> -->
     <link rel="stylesheet" href="/index.af20ad6e.css">
     <link rel="stylesheet" as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <script src="/index.c4775257.js" defer=""></script> 
@@ -154,15 +153,15 @@
       this[globalName] = mainExports;
     }
   }
-})({"6jlvt":[function(require,module,exports) {
-module.exports = require("127e01316884969")(require("19772d71f55fdb32").getBundleURL("7mxuX") + "naver-oauth.852a7cfc.js" + "?" + Date.now()).catch((err)=>{
+})({"aWzK1":[function(require,module,exports) {
+module.exports = require("dbc3cdbdc51d4215")(require("314aaeba7ece4316").getBundleURL("iftg9") + "naver-oauth.852a7cfc.js" + "?" + Date.now()).catch((err)=>{
     delete module.bundle.cache[module.id];
     throw err;
 }).then(()=>module.bundle.root("9OQxq"));
 
-},{"127e01316884969":"cgkRr","19772d71f55fdb32":"jMDco"}],"cgkRr":[function(require,module,exports) {
+},{"dbc3cdbdc51d4215":"aUGG2","314aaeba7ece4316":"95GEp"}],"aUGG2":[function(require,module,exports) {
 "use strict";
-var cacheLoader = require("cb9877257baa9e6d");
+var cacheLoader = require("8a9e5d53130b603a");
 module.exports = cacheLoader(function(bundle) {
     return new Promise(function(resolve, reject) {
         // Don't insert the same script twice (e.g. if it was already in the HTML)
@@ -196,7 +195,7 @@ module.exports = cacheLoader(function(bundle) {
     });
 });
 
-},{"cb9877257baa9e6d":"8TO7f"}],"8TO7f":[function(require,module,exports) {
+},{"8a9e5d53130b603a":"izQFI"}],"izQFI":[function(require,module,exports) {
 "use strict";
 var cachedBundles = {};
 var cachedPreloads = {};
@@ -222,7 +221,7 @@ module.exports = function(loader, type) {
     };
 };
 
-},{}],"jMDco":[function(require,module,exports) {
+},{}],"95GEp":[function(require,module,exports) {
 "use strict";
 var bundleURL = {};
 function getBundleURLCached(id) {
@@ -257,25 +256,47 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"joHPX":[function(require,module,exports) {
-module.exports = require("e94303ce15462098")(require("6b9953b5faba820a").getBundleURL("7mxuX") + "google-oauth.02859b96.js" + "?" + Date.now()).catch((err)=>{
+},{}],"dMop8":[function(require,module,exports) {
+module.exports = require("988d9526f7bb25f3")(require("ac4796036fd3c575").getBundleURL("iftg9") + "google-oauth.02859b96.js" + "?" + Date.now()).catch((err)=>{
     delete module.bundle.cache[module.id];
     throw err;
 }).then(()=>module.bundle.root("82qUm"));
 
-},{"e94303ce15462098":"cgkRr","6b9953b5faba820a":"jMDco"}]},[], null, "parcelRequire1c7f")
+},{"988d9526f7bb25f3":"aUGG2","ac4796036fd3c575":"95GEp"}]},[], null, "parcelRequire1c7f")
 addEventListener("await oauth", ({ detail })=>{
+    //구글 로그인시 detail.userInfo.message가 없음  수정 필요 
+    const isSucceded = detail.userInfo.message === "success";
     console.log(detail);
+    isSucceded;
 });
+function popup(url = "", width = 900, height = outerHeight) {
+    const options = `top=20, left=${(outerWidth - width) / 2}, width=${width}, height=${height}, status=no, menubar=no, toolbar=no, resizable=no,scrollbars=yes,popup=yes`;
+    window.open(url, "_blank", options);
+}
+function setCookies(detail) {
+    //리팩토링 예정 setCookies 와 로그인타입별 객체 스타일 통합
+    const access_token = detail.token;
+    const id = detail.userInfo.response.id;
+    const nickname = detail.userInfo.response.nickname;
+    const profile_image = detail.userInfo.response.profile_image;
+    document.cookie = `access_token=${access_token}`;
+    document.cookie = `id=${id}`;
+    document.cookie = `nickname=${nickname}`;
+    document.cookie = `profile_image=${profile_image}`;
+}
 onload = async ()=>{
     //네이버
-    const { loginNaverOauth } = await parcelRequire1c7f("6jlvt");
+    const { getURLnaverLogin } = await parcelRequire1c7f("aWzK1");
     const naverBtn = document.getElementById("naver-oauth");
+    const modal = document.getElementById("modalWrap");
     naverBtn.addEventListener("click", function() {
-        const res = loginNaverOauth("zVhxXT6bnKTe2u6CE_LS", "rS9t1Y77iB");
+        const CLIENT_ID = "zVhxXT6bnKTe2u6CE_LS";
+        const url = getURLnaverLogin(CLIENT_ID);
+        popup(url, 1000);
+        modal.style.display = "none";
     });
     //구글
-    const { loginGoogleOauth } = await parcelRequire1c7f("joHPX");
+    const { loginGoogleOauth } = await parcelRequire1c7f("dMop8");
     const googleBtn = document.getElementById("google-oauth");
     googleBtn.addEventListener("click", function() {
         const CLIENT_ID = "105140587367-9vopq2ppro5udibmfcvv0l4rbslrq9qq.apps.googleusercontent.com";
