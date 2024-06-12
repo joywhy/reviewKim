@@ -11,13 +11,7 @@ Object.defineProperties(self, {
 	DELAY_LIST: {value: new Map},
 })
 
-{
-  remove(){},
-}
 
-{
-  remove:function v(){}
-}
 
 Object.defineProperty(Array.prototype, 'remove', {
 	value(o){
