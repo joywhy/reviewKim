@@ -1,6 +1,8 @@
 document.title = '리뷰킴';
 
 const {isArray} = Array;
+const {now} = Date;
+
 Object.defineProperties(self, {
 	// INIT_MAP: {value: new Map},
 	// COMP_MAP: {value: new Map},
@@ -27,14 +29,6 @@ Object.defineProperty(Array.prototype, 'remove', {
     //   })
 	}
 });
-//? 상단 방식이 get 이 아닌 value 쓴 이유
-// Object.defineProperty(Array.prototype, 'remove', {
-
-// 	get(o){
-// 		const i = this.indexOf(o); //remove
-// 		if(i >= 0) this.splice(i, 1);
-// 	}
-// });
 
 Object.defineProperty(RadioNodeList.prototype, 'value', {   //좀더 분석
 	get(){
@@ -71,7 +65,9 @@ Object.defineProperty(RadioNodeList.prototype, 'value', {   //좀더 분석
 // v='y-m-d(w) h:i:s'  문자열 
 // u  
 
-Object.defineProperty(Date.prototype, 'format', {enumerable : false, value(v, arg2 = ['지금막','분 전','시간 전','일 전']){ //객체의 속성 열거 시 비노출
+Object.defineProperty(Date.prototype, 'format', {
+  enumerable : false, 
+  value(v, arg2 = ['지금막','분 전','시간 전','일 전']){ //객체의 속성 열거 시 비노출
   let [W,w,Y,m,d,h,i,s] = [
       ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][this.getDay()],//0-6
       ['일', '월', '화', '수', '목', '금', '토'][this.getDay()],
@@ -95,7 +91,7 @@ Object.defineProperty(Date.prototype, 'format', {enumerable : false, value(v, ar
 
 
   v = v.replace(/(W|Y|m|d|h|i|s|M|D|H|I|S)/gi, $1 => (date[$1] || $1));
-  
+  // console.log(v );//6.25
   
   let diff =(new Date().getTime() - this.getTime())/1000,
       day_diff =Math.floor(diff/86400);
@@ -165,6 +161,11 @@ Object.assign(self, {
   await_i: 1,
   res(i, data){
     dispatchEvent(new CustomEvent(`await ${i}`, {detail: data}));
+  },
+  cancelDelay: {
+    string: _ => cancelAnimationFrame(_),
+    number: _ => clearTimeout(_),
+    function: _ => _()
   },
   async onready(){
     cookie.my &&= cookie.my;
@@ -274,33 +275,36 @@ Object.assign(self, {
   onhashchange(){
     isHashChange = true;
   },
-  popstateDebounce: debounce(() => {
-    if(isHashChange){
-      isHashChange = false;
-      return;
-    }
-    DELAY_LIST.forEach((_, rej) => {
-      if(typeof _ == 'string'){
-        cancelAnimationFrame(_)
-      }else if(typeof _ == 'number'){
-        clearTimeout(_);
+	async onpopstate(){
+    if(location.search.includes('exit')){
+      if(confirm('탈퇴 후에는 한 달간은 재가입이 불가능합니다.')){
+        alert('탈퇴가 완료되었습니다.');
+        fetch(`https://api.seu.ai/exit?my=${cookie.my}`, {mode: 'no-cors'});
+        logout();
+        popupClose();
+        apply();
+        return;
       }else{
-        _();
+        popupClose();
       }
-      rej('delay cancel: page move');
-    });
-    DELAY_LIST.clear();
-    render();
-  }),
-	onpopstate(){
+    }
     if(location.search.includes('logout')){
       logout();
       popupClose();
       apply();
       return;
     }
-    // isHistory = true;
-    popstateDebounce();
+   // isHistory = true;
+   try{
+    await delay(250, 'popstate');
+    if(isHashChange){
+      isHashChange = false;
+      return;
+    }
+    DELAY_LIST.forEach(ac => ac.abort());
+    DELAY_LIST.clear();
+    render();
+  }catch{}
   },
 
 	copy(text){
@@ -371,3 +375,7 @@ addEventListener('await count', ({detail: {pageNo, count}}) => {
     DATA.count = count;
   }
 });
+
+addEventListener('await cuu', ({detail :count}) => {
+  console.log(count)
+})
