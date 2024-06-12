@@ -6,9 +6,18 @@ Object.defineProperties(self, {
 	// COMP_MAP: {value: new Map},
 	DIR: {value: location.protocol == 'https:' ? '' : '.'},
 	// COMP_DIR: {get(){return `${DIR}/comp`}},
-	IMG_DIR: {get(){return `${DIR}/img`}},  //https ->  /img   아니면 ./img
+	IMG_DIR: {get(){return `${DIR}/img`}}, //https ->  /img   아니면 ./img
 	DB_HOST: {value: 'db.review.kim'},  
+	DELAY_LIST: {value: new Map},
 })
+
+{
+  remove(){},
+}
+
+{
+  remove:function v(){}
+}
 
 Object.defineProperty(Array.prototype, 'remove', {
 	value(o){
@@ -72,7 +81,7 @@ Object.defineProperty(RadioNodeList.prototype, 'value', {   //좀더 분석
 
 Object.defineProperty(Date.prototype, 'format', {enumerable : false, value(v, arg2 = ['지금막','분 전','시간 전','일 전']){ //객체의 속성 열거 시 비노출
   let [W,w,Y,m,d,h,i,s] = [
-      ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][this.getDay()],
+      ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][this.getDay()],//0-6
       ['일', '월', '화', '수', '목', '금', '토'][this.getDay()],
       this.getFullYear(),
       (this.getMonth() + 1),
@@ -128,14 +137,35 @@ function remainTime(ms){
   }
 }
 //나중에 볼것 -> 반영후 
-self.debounce = (fn, time = 250) => {
-  let timer;
-  return (...args)=>{
-    clearTimeout(timer);
-    timer = setTimeout(()=>{
-      fn?.apply(this, args);
-    }, time);
-  };
+self.raf = requestAnimationFrame;
+
+function delay(_, $){
+  const ac = new AbortController;
+  const isDebounce = typeof $ == 'string';
+  const id = isDebounce ? $ : `await ${await_i++}`;
+  ac.signal.onabort = () => {
+    cancelDelay[typeof ac._](ac._);
+    DELAY_LIST.delete(id);
+    ac.rej('delay abort');
+  }
+
+  if(isDebounce) DELAY_LIST.get(id)?.abort();
+  DELAY_LIST.set(id, ac);
+  return new Promise((res, rej) => {
+    let __;
+    if(_ == null){
+      __ = String(raf(res));
+    }else if(typeof _ == 'number'){
+      __ = setTimeout(() => res(), _);
+    }else{
+      ($ || self).addEventListener(_, e => {
+        DELAY_LIST.delete(id);
+        res(e);
+      }, {passive: true, once: true});
+      __ = () => ($ || self).removeEventListener(_, res);
+    }
+    assign(ac, {_: __, rej})
+  });
 };
 
 Object.assign(self, {
@@ -143,29 +173,6 @@ Object.assign(self, {
   await_i: 1,
   res(i, data){
     dispatchEvent(new CustomEvent(`await ${i}`, {detail: data}));
-  },
-  DELAY_LIST: new Map,
-  delay(_ = 250, $){
-    return new Promise((res, rej) => {
-      if(typeof _ == 'number'){
-        DELAY_LIST.set(
-          rej,
-          setTimeout(() => {
-            DELAY_LIST.delete(rej);
-            res()
-          }, _)
-        );
-      }else{
-        ($ || self).addEventListener(_, e => {
-          DELAY_LIST.delete(rej);
-          res(e);
-        }, {passive: true, once: true});
-        DELAY_LIST.set(
-          rej,
-          () => ($ || self).removeEventListener(_, res)
-        );
-      }
-    });
   },
   async onready(){
     cookie.my &&= cookie.my;
