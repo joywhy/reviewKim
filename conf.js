@@ -11,8 +11,6 @@ Object.defineProperties(self, {
 	DELAY_LIST: {value: new Map},
 })
 
-
-
 Object.defineProperty(Array.prototype, 'remove', {
 	value(o){
 		const i = this.indexOf(o); //배열안에 o 에 대한 인덱스 
