@@ -117,8 +117,8 @@ Object.defineProperty(Date.prototype, 'format', {
 function remainTime(ms){
     if(0 < ms) {
 
-      const d = Math.floor(ms / (1000*60*60*24));
-      const h = Math.floor((ms / (1000*60*60)) % 24);
+      const d = Math.floor(ms / (1000*60*60*24)); //날짜 
+      const h = Math.floor((ms / (1000*60*60)) % 24); //시간 
       const i = Math.floor((ms / (1000*60)) % 60);
       const s = Math.floor(ms / 1000 % 60);
 
