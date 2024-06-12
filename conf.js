@@ -93,19 +93,22 @@ Object.defineProperty(Date.prototype, 'format', {
   v = v.replace(/(W|Y|m|d|h|i|s|M|D|H|I|S)/gi, $1 => (date[$1] || $1));
   // console.log(v );//6.25
   
-  let diff =(new Date().getTime() - this.getTime())/1000,
-      day_diff =Math.floor(diff/86400);
+  let diff =(new Date().getTime() - this.getTime())/1000, //밀리초단위 ->초
+      day_diff =Math.floor(diff/86400); //날짜차이 
 
 
   if(arg2){
       return (
+        //day_diff 는 0이하 일경우
           day_diff <= 0 && (
+            //diff가 60보다 작으면 arg2[0]을 반환
               diff < 60 && arg2[0] ||
+              //diff가 3600(1시간)보다 작으면 Math.floor(diff/60) + arg2[1]를 반환 -> diff를 분 단위로 변환하여 내림
               diff < 3600 && Math.floor(diff/60) + arg2[1] ||
-              diff < 86400 && Math.floor(diff/3600) + arg2[2]
+              diff < 86400 && Math.floor(diff/3600) + arg2[2] //시간단위로 반환
           )
-          || day_diff < 7 && day_diff + arg2[3]
-          || day_diff >= 7 && v
+          || day_diff < 7 && day_diff + arg2[3] //모든 조건이 false이고, day_diff가 7보다 작으면
+          || day_diff >= 7 && v //모든 조건이 false이고, day_diff가 7 이상이면 v를 반환
       )
   }
   return v;
@@ -124,7 +127,6 @@ function remainTime(ms){
       return 0;
   }
 }
-//나중에 볼것 -> 반영후 
 self.raf = requestAnimationFrame;
 
 function delay(_, $){
