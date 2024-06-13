@@ -11,7 +11,7 @@ assign(self, {
 			text,
 			tpl = assign(document.createElement("template"), {innerHTML: text}).content //DocumentFragment 객체를 반환 
 		);
-		console.log(tpl);
+		// console.log(tpl);
 		return tpl;
 	},
 	frag: text => text.replaceAll('<>', '<l></l>'), //<>hello</> -> <l>hello</l>  반환   text 는 어떤식으로 들어오는가
@@ -28,8 +28,10 @@ assign(self, {
 		return tpl;
 	},
 	html: (text, ...val) => tpl(frag(String.raw({raw: text}, ...val))).cloneNode(true), // HTML 템플릿을 생성하고 클론을 반환
+	
 	update($$, ...attrList){
 		return $$.map(($, i) => {
+			//$ 에 apply 가 있다면 
 			if('apply' in $){
 				const isPush = 'isPush' in $;
 				if(isPush) $.isPush = false;
@@ -103,12 +105,34 @@ assign(self, {
 	},
 	startTime: 1703*1.e+9, //1703*1.e+9,
 	uid: () => (new Date - startTime).toString(36),
+	/* 
+	$p = html`
+	<div>hello
+	<p class=ℓ></p>
+	</div>`; 
+	*/
 	ℓ: ($p, ...applyList) =>  {
+		//태그 이름이 l 클래스 
+		//id가 example이라면, 클래스 이름이 ℓexample
+		/*
+		이건 왜 동작하는지 
+		<button id ="naver-oauth" class="ℓ">
+		네이버 로그인
+		</button>
+		*/
+		//id가 정의되지 않았다면, 클래스 이름이 ℓ 
+		//NodeList
 		const $$ = [...$p.querySelectorAll(`l, .ℓ${$p.id ?? ''}`)];
+		// console.log($$);
 		$$.forEach(($, i) => {
+			//요소의 로컬이름이 l 인경우 <l></l>
 			if($.localName == 'l'){
-				$.replaceWith($ = new Text);
+				// 선택된 부모 노드가 가지고 있는 노드를 새로운 텍스트 노드로 교체
+				$.replaceWith($ = new Text); 
+				//applyList 없으면 그대로 텍스트 노드로 
+				
 				$$[i] = applyList.shift()?.($) ?? $;
+				console.log($$[i]);
 			}
 		})
 		return $$;
@@ -131,19 +155,53 @@ assign(self, {
 		$ = $.cloneNode(true);
 		return {$, apply: fn($, item, i), $start: $.firstChild, $end: $.lastChild}
 	},
-	cond: ($frag, fn) => $ => {
+	//UI 프레임워크
+
+	/*
+	$frag
+	=
+	  html`<a href=/my>
+      <img src=${IMG_DIR}/user.svg>
+      <span class=ℓ></span>
+      </a>
+      <a href=?logout>로그아웃</a>`
+    fn
+
+    $ => {
+    const {firstChild: $start, lastChild: $end} = $;
+    console.log($start); //header
+    console.log($end); //footer
+    // console.log("----------");
+    const $$ = ℓ($,);
+    
+    return () => {
+    update($$,
+    {innerText:`${DATA.my.nick}님`}
+    );
+
+
+    return {$start, $end};
+   }
+    }
+
+	*/
+	cond: ($frag, fn) => $ => { // $?
+		console.log($);
 		return {
 			is: false,
 			$start: $,
 			$end: $,
 			apply(is){
+				//is 가 변경된 경우
 				if(this.is != (this.is = !!is)){
+					//is  true 
 					if(is){
 						const {$, apply, $start, $end} = setBind($frag, fn);
 						this.$start.before($);
 						this.$start.remove();
 						assign(this, {$start, $end}, (this.blockApply = apply)?.())
 					}else{
+						//is  false
 						blockRemove(this);
 						this.blockApply = null;
 					}
@@ -153,6 +211,7 @@ assign(self, {
 			}
 		}
 	},
+	//리스트 순회하면서  DOM 요소 삽입 업데이트
 	loop: ($frag, fn) => $ => ({
 		$start: $,
 		$end: $,

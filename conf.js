@@ -113,7 +113,7 @@ Object.defineProperty(Date.prototype, 'format', {
   }
   return v;
 }});
-// 밀리초 ms 3000
+// 밀리초 ms 3000 남은 시간을 일,시간,분 , 초 형식으로 변환 
 function remainTime(ms){
     if(0 < ms) {
 
@@ -129,18 +129,49 @@ function remainTime(ms){
 }
 self.raf = requestAnimationFrame;
 
+//디바운싱
 function delay(_, $){
+  /*
+    _ = ms or 이벤트이름 
+    $ 요소 or 디바운스 고유이름
+
+    await delay(1000) // 1초 대기후 동작
+    1. await delay('load') // _가 문자열일경우 이벤트로 동작
+    2. awiit delay('load', $img);
+    
+    const clickDebounce = debounce(1000);
+    onclick = () => clickDebounce(() => {
+      console.log('b');  
+    })
+
+    -> onclick = () => { try{
+      await delay(1000, 'a');
+      console.log('b');
+    }catch{} };
+  */
+ 
   const ac = new AbortController;
-  const isDebounce = typeof $ == 'string';
-  const id = isDebounce ? $ : `await ${await_i++}`;
+  const isDebounce = typeof $ == 'string';  //$ === $img ->false  , $ ==='a' -> true
+  const id = isDebounce ? $ : `await ${await_i++}`; //await_i 위치  182 
+  
+  //$=== 'a'-> 'a' ,  $ ===$img -> await 1
+
+
+  //커스텀 이벤트를 선언해줘야 함
+
+
+  //onabort 이벤트 핸들러 설정
   ac.signal.onabort = () => {
-    cancelDelay[typeof ac._](ac._);
-    DELAY_LIST.delete(id);
+    cancelDelay[typeof ac._](ac._); //188줄  _ 는 3000초 일수도 'load' 일수도 
+    //_ 3000초 -> clearTimeout(3000)
+    //_ 'load' -> cancelAnimationFrame(_)  //애니메이션 프레임 요청
+    DELAY_LIST.delete(id);  //DELAY_LIST 해당 아이디 값을 
     ac.rej('delay abort');
   }
 
   if(isDebounce) DELAY_LIST.get(id)?.abort();
   DELAY_LIST.set(id, ac);
+
   return new Promise((res, rej) => {
     let __;
     if(_ == null){
@@ -153,34 +184,41 @@ function delay(_, $){
         res(e);
       }, {passive: true, once: true});
       __ = () => ($ || self).removeEventListener(_, res);
-    }
+    } 
     assign(ac, {_: __, rej})
   });
 };
-
+//웹소켓 및 데이터 처리 
 Object.assign(self, {
 
   await_i: 1,
-  res(i, data){
-    dispatchEvent(new CustomEvent(`await ${i}`, {detail: data}));
+  res(i, data){ //어떤식으로 들어오는 지 
+    //type 이름이 await 1? 
+    dispatchEvent(new CustomEvent(`await ${i}`, {detail: data})); //이벤트 발생
   },
   cancelDelay: {
     string: _ => cancelAnimationFrame(_),
     number: _ => clearTimeout(_),
-    function: _ => _()
+    function: _ => _()   //함수가 들어올 경우가 있나?
   },
   async onready(){
-    cookie.my &&= cookie.my;
+    cookie.my &&= cookie.my; //cookie.my=cookie.my &&cookie.my;
 
     await import('https:seu.ai/brotli.js');
     const {
-      compress,
-      decompress
-    } = await brotliwasm.load();
+      compress,//? 압축
+      decompress //? 압축 풀기
+    } = await brotliwasm.load(); //어떤 값이 들어오게 되는 지 brotliwasm 
     assign(self, {
-      enBrotli(blob){return compress(blob, 4096, 11)},
-      deBrotli(blob){return new TextDecoder().decode(decompress(blob))},
-      async req(cmd, data){
+      enBrotli(blob){//blob?
+        return compress(blob, 4096, 11) // 4096? 11?
+      }, 
+      deBrotli(blob){
+        return new TextDecoder().decode(decompress(blob))
+      },
+      //서버에게 응답 명령 받는 함수
+      async req(cmd, data){ //cmd, data ex
+        //ws
         if(ws.readyState == ws.CLOSED) await ws.reload();
         ws.send(enBrotli(new TextEncoder().encode(`${cmd}\x1D${JSON.stringify(assign(data || {}, {await_i}))}`)));
         return (await delay(`await ${await_i++}`)).detail;
