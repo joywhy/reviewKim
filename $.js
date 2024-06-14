@@ -28,7 +28,8 @@ assign(self, {
 		return tpl;
 	},
 	html: (text, ...val) => tpl(frag(String.raw({raw: text}, ...val))).cloneNode(true), // HTML 템플릿을 생성하고 클론을 반환
-	
+	//$$ [text, text, text, p.ℓ, p.ℓ, a.mainBtn.ℓ, span.ℓ, button.ℓ, span.ℓ, button.ℓ, text, text]
+    //attrList `이은희님`
 	update($$, ...attrList){
 		return $$.map(($, i) => {
 			//$ 에 apply 가 있다면 
@@ -132,7 +133,7 @@ assign(self, {
 				//applyList 없으면 그대로 텍스트 노드로 
 				
 				$$[i] = applyList.shift()?.($) ?? $;
-				console.log($$[i]);
+				// console.log($$[i]);
 			}
 		})
 		return $$;
@@ -186,7 +187,7 @@ assign(self, {
 
 	*/
 	cond: ($frag, fn) => $ => { // $?
-		console.log($);
+		// console.log($);
 		return {
 			is: false,
 			$start: $,

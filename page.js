@@ -57,14 +57,15 @@ Object.assign(self,{
   comp_timer(_, apply){ //어떻게 들어오는 지 
     let endDate, time, format;
     const $ = html`<span class=ℓ>`,
-      $$ = ℓ($); //ℓ() 함수 의미 
+      $$ = ℓ($); //[span.ℓ]
 
-    (apply = (attr = {endDate, time, format}) => {
-      ({endDate, time, format} = attr); //attr?
+    (apply = (attr = {endDate, time, format}) => { //endDate ,time , format
+      ({endDate, time, format} = attr); 
+       //() 로 감싼 이유
+      //{endDate, time, format} 
       if(endDate) time = endDate - Date.now();
-      update($$,
-        {innerText: remainTime(time)}
-      );
+      update($$,{innerText: remainTime(time)});
+      //update([span.ℓ],{innerText: `13d일 12:12:00`})
     });
     setInterval(apply, 1000)
 
@@ -105,6 +106,8 @@ Object.assign(self,{
   },
   //로그인 
   comp_login(_, apply){
+    // console.log(_); //""
+    // console.log(apply); // undefined
     const $ = html`
       <button id="naver-oauth" class="ℓ"><img src="${IMG_DIR}/naverloginbutton.svg" alt="네이버로그인"></button>
       <button id="google-oauth" class="ℓ"><img src="${IMG_DIR}/googleloginbutton.svg" alt="구글로그인"></button>
@@ -155,7 +158,7 @@ const PAGE = {
       </header>
     */
     // <input type="search">
-
+  //<> 혹은 class=ℓ 인 것을 순서대로 들어간다.
     const $ = html`<header>
     <div class=container>
     
@@ -181,7 +184,8 @@ const PAGE = {
     </div></div>
     
     <div class=progressBar><img src=${IMG_DIR}/line1.svg><img class=progressLine src=${IMG_DIR}/line2.svg></div></div>
-    <div class=articleTitle><h2><span>D-day</span><></h2><div class=recruitment><img src=${IMG_DIR}/users.svg alt=모집인원아이콘>
+    <div class=articleTitle><h2><span>D-day</span>
+    <></h2><div class=recruitment><img src=${IMG_DIR}/users.svg alt=모집인원아이콘>
     <p class=ℓ></p><span>/30</span></div></div>
     <ul>
     <li><h3>접수 기간</h3><p class=ℓ></p></li>
@@ -222,11 +226,13 @@ const PAGE = {
       cond(
       html`<a href=/my><img src=${IMG_DIR}/user.svg><span class=ℓ></span></a><a href=?logout>로그아웃</a>`, 
       $ => {
+        // $ ->
+        // $start -> 
+        // $end ->
+        // console.log($);
     const {firstChild: $start, lastChild: $end} = $;
-    // console.log($start); //header
-    // console.log($end); //footer
-    // // console.log("----------");
-    const $$ = ℓ($,);
+    // console.log($start,$end);
+    const $$ = ℓ($,); 
     
     return () => {
     update($$,{innerText:`${DATA.my.nick}님`});
@@ -237,14 +243,15 @@ const PAGE = {
 
 
     cond(
-      html`<a href=#login class=mainBtn>로그인</a>
-      <div class="blind popup">
-      <article id=login>
-      <button class="close ℓ"></button>
-      <img src=${IMG_DIR}/logo_en_reviewKim.svg><></article></div>`, 
+      html`<a href=#login class=mainBtn>로그인</a><div class="blind popup"><article id=login><button class="close ℓ"></button><img src=${IMG_DIR}/logo_en_reviewKim.svg><></article></div>`, 
       
       $ => {
+
+        // console.log(...$.childNodes); 
+        //$ ->   <a href=#login class=mainBtn>로그인</a><div class="blind popup"><article id=login><button class="close ℓ"></button><img src=${IMG_DIR}/logo_en_reviewKim.svg><></article></div>`, 
+      
     const {firstChild: $start, lastChild: $end} = $;
+        // console.log($start,$end);
     const $$ = ℓ($,comp_login);
     
     return () => {
@@ -321,7 +328,8 @@ const PAGE = {
     ))();
     return $;
   },
-  my({my}){const $ = html`
+  my({my}){
+    const $ = html`
     <header><div class=container>
     <h1><a href=/ class=logo>
     <img src=${IMG_DIR}/logo_kor_reviewKim.svg alt=리뷰킴>
@@ -370,10 +378,11 @@ const $$ = ℓ($,
       <img src=${IMG_DIR}/user.svg>
       <span class=ℓ></span>
       </a>
-      <a href=?logout>로그아웃</a><>`, $ => {
+      <a href=?logout>로그아웃</a><>`,
+       $ => {
 			const {
 				firstChild: $start,
-				// lastChild: $end
+				lastChild: $end
 			} = $;
 			const $$ = ℓ($, loop());
 
