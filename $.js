@@ -192,71 +192,6 @@ assign(self, {
 	},
 	//UI 프레임워크
 
-	/*
-	$frag
-	=
-	  html`<a href=/my>
-      <img src=${IMG_DIR}/user.svg>
-      <span class=ℓ></span>
-      </a>
-      <a href=?logout>로그아웃</a>`
-    fn
-
-    $ => {
-    const {firstChild: $start, lastChild: $end} = $;
-    console.log($start); //header
-    console.log($end); //footer
-    // console.log("----------");
-    const $$ = ℓ($,);
-    
-    return () => {
-    update($$,
-    {innerText:`${DATA.my.nick}님`}
-    );
-
-
-    return {$start, $end};
-   }
-    }
-
-	*/
-
-	//		$$[i] = applyList.shift()?.($) ?? $;
-
-	/*
-$ => { 
-	
-
-		console.log($);
-		return {
-			is: false,
-			$start: $,
-			$end: $,
-			apply(is){ //apply 함수에서 실행
-				//is 가 변경된 경우
-				if(this.is != (this.is = !!is)){
-					//is  true 
-					if(is){
-						const {$, apply, $start, $end} = setBind($frag, fn);
-						this.$start.before($);
-						this.$start.remove();
-						assign(this, {$start, $end}, (this.blockApply = apply)?.())
-					}else{
-						//is  false
-						blockRemove(this);
-						this.blockApply = null;
-					}
-				}else if(is){
-					assign(this, this.blockApply?.());
-				}
-			}
-		}
-	},
-	
-	
-	*/
-
-	
 	cond: ($frag, fn) => $ => { 
 		/*
 	   cond 함수  역할 
@@ -269,9 +204,8 @@ $ => {
 			is: false,
 			$start: $,
 			$end: $,
-			apply(is){ //apply 함수에서 실행
-				// console.trace();
-				//is 가 변경된 경우
+			apply(is){ //true
+				// is 가 변경했을때  
 				if(this.is != (this.is = !!is)){
 					//is  true 
 					if(is){

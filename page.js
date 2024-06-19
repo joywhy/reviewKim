@@ -110,8 +110,6 @@ Object.assign(self,{
   },
   //로그인 
   comp_login(_, apply){
-    // console.log(_); //""
-    // console.log(apply); // undefined
     const $ = html`
       <button id="naver-oauth" class="ℓ"><img src="${IMG_DIR}/naverloginbutton.svg" alt="네이버로그인"></button>
       <button id="google-oauth" class="ℓ"><img src="${IMG_DIR}/googleloginbutton.svg" alt="구글로그인"></button>
@@ -124,7 +122,6 @@ Object.assign(self,{
     ]
     */
 
-    // console.log($$);
 
     async function login(type){
       removeEventListener('await login', loginHander);
@@ -182,7 +179,6 @@ const PAGE = {
 
  $$ =>  $ 중 변경점이 있는 <>   .ℓ 를 추출 및 알맞게 변경한 배열
  */
-
     const $ = html`<header>
     <div class=container>
     
@@ -296,9 +292,9 @@ const PAGE = {
     const $$ = ℓ($,
     loop(html`
       <label><input type=checkbox name=date class=ℓ>
-      <div><em class=ℓ></em><span class=ℓ></span></div></label>`, $ => {
-    const $$ = ℓ($,
-    );
+      <div><em class=ℓ></em><span class=ℓ></span></div></label>`,
+       $ => {
+    const $$ = ℓ($,);
     
     return (item, i, {$start, $end}) => {
     update($$,
@@ -307,9 +303,9 @@ const PAGE = {
     {innerText:`${item[0].format('D일 (w) H:I', false)} - ${item[1].format('H:I', false)}`}
     );
     return {$start, $end, i};
-    }
-    }, /* len*/)
-    );
+      }
+    }, /* len*/
+  ));
     
     return () => {
     update($$,
@@ -350,8 +346,8 @@ button.ℓ,
  ]
 */
     update($$,
-    DATA.my.no, //
-    !DATA.my.no, //is
+    DATA.my.no, //$ = $.apply(attrList[i])
+    !DATA.my.no, //비로그인 여부 비로그인->true 로그인->false
     {format:`D일 H:I:S`,endDate:endDate},
     {innerText: DATA.count},
     {innerText:`- ${endDate.format('m.d', false)}`},
