@@ -1,7 +1,6 @@
 const {assign, keys} = Object
 const TPL_MAP = new Map;
 
-
 assign(self, {
 	tpl(text, tpl){
 		//TPL_MAP 에 text 있다면 그 템플릿의 클론을 반환
@@ -11,13 +10,12 @@ assign(self, {
 			text,
 			tpl = assign(document.createElement("template"), {innerHTML: text}).content //DocumentFragment 객체를 반환 
 		);
-		// console.log(tpl);
 		return tpl;
 	},
+
 	frag: text => text.replaceAll('<>', '<l></l>'), //<>hello</> -> <l>hello</l>  반환   text 는 어떤식으로 들어오는가
-
-
 	//text 와 val 은 어떤식으로 들어오는가
+	
 	/*
 	html`test`;
 	*/
@@ -31,8 +29,9 @@ assign(self, {
 	//$$ [text, text, text, p.ℓ, p.ℓ, a.mainBtn.ℓ, span.ℓ, button.ℓ, span.ℓ, button.ℓ, text, text]
     //attrList `이은희님`
 	update($$, ...attrList){
+		console.log($$);
 		return $$.map(($, i) => {
-			//$ 에 apply 가 있다면 
+			//블럭단위로 객체화 되어 있는 상태
 			if('apply' in $){
 				const isPush = 'isPush' in $;
 				if(isPush) $.isPush = false;
@@ -47,44 +46,77 @@ assign(self, {
 				$.removeAttribute('class');
 			}
 			*/
-			const prop = attrList[i];
-			keys(prop).forEach(k => {
-				if(typeof prop[k] == 'object'){
-					if(k == 'style'){
-						const style = prop[k];
-						keys(style).forEach(k => {
-							if(style[k] == null){
-								$.style.removeProperty(k)
-							}else{
-								$.style.setProperty(k, style[k]);
-							}
-						});
-						return;
+			try{
+				const prop = attrList[i];
+			
+				keys(prop).forEach(k => {
+					// console.log(k);//함수일경우 함수명이 key-> onclick
+					if(typeof prop[k] == 'object'){
+                         /*
+						 태그 인라인스타일 적용
+						 예시 {style:['font-size': '1px', color:'black',display: isNone ? 'none' : null]} 
+						 -> <span style="font-size: 1px; color: black "></span>
+						 */
+						if(k == 'style'){
+							const style = prop[k];//style=['font-size': '1px', color:'black']
+							keys(style).forEach(styleKey => {//styleKey = ['font-size',  color]  
+								//특정 스타일을 기본값으로 초기화 할 경우 
+								if(style[styleKey] == null){
+									$.style.removeProperty(styleKey)
+								}else{
+									//인라인 스타일 적용
+									$.style.setProperty(styleKey, style[styleKey]);
+								}
+							});
+							return;
+						}
+					     //태크 데이터속성 정의{dataset :{abc:1}} -> <tag data-abc="1">
+						if(k == 'dataset'){
+							keys(prop[k]).forEach(key => {
+								if(prop[k][key] == null){
+									delete prop[k][key];
+									delete $.dataset[key];
+								}
+							})
+							assign($.dataset, prop[k])
+						}
 					}
+					//변경점이 없었을 때 
+					if(($.getAttribute?.(k) || $[k]) === prop[k]) return;
+					// 속성과 프로퍼티에 대한 명칭이 다른기 때문에 제대로 가져오지 않았기 때문 
+					/*
+					ariaPressed
 
-					if(k == 'dataset'){
-						keys(prop[k]).forEach(key => {
-							if(prop[k][key] == null){
-								delete prop[k][key];
-								delete $.dataset[key];
-							}
-						})
-						assign($.dataset, prop[k])
+					<span class="mainBtn">B</span>
+					document.querySelector('span').ariaPressed = true
+					true 
+					document.querySelector('span')
+					<span class ="mainBtn" aria-pressed="true">B</span>
+					document.querySelector('span').getAttribute('ariaPressed')
+					null
+					document.querySelector('span').getAttribute('aria-pressed')
+					true
+					*/
+
+					/*
+					속성 삭제
+			        {src : null}
+					<img src='null'> x
+					<img> o
+					*/
+					if(prop[k] == null){
+						delete $[k];
+						$.removeAttribute(k);
+					}else{
+						$[k] = prop[k];
 					}
-				}
-
-				if(($.getAttribute?.(k) || $[k]) === prop[k]) return;
-
-				if(prop[k] == null){
-					delete $[k];
-					$.removeAttribute(k);
-				}else{
-					$[k] = prop[k];
-				}
-			});
+				});
+			}catch{
+				console.error($$, $, i)
+			}
 		});
 	},
-	comp($, $new, apply){
+	comp($, $new, apply){ //new Text html`<span class=ℓ>`  apply
 		const {firstChild :$start, lastChild :$end} = $new;
 		$.replaceWith($new);
 		return {apply, $start, $end};
@@ -106,34 +138,36 @@ assign(self, {
 	},
 	startTime: 1703*1.e+9, //1703*1.e+9,
 	uid: () => (new Date - startTime).toString(36),
-	/* 
-	$p = html`
-	<div>hello
-	<p class=ℓ></p>
-	</div>`; 
-	*/
 	ℓ: ($p, ...applyList) =>  {
-		//태그 이름이 l 클래스 
-		//id가 example이라면, 클래스 이름이 ℓexample
-		/*
-		이건 왜 동작하는지 
-		<button id ="naver-oauth" class="ℓ">
-		네이버 로그인
-		</button>
-		*/
-		//id가 정의되지 않았다면, 클래스 이름이 ℓ 
-		//NodeList
-		const $$ = [...$p.querySelectorAll(`l, .ℓ${$p.id ?? ''}`)];
-		// console.log($$);
+	/*	
+	ℓ함수(레이어 함수) 역할 
+	:기존 html($p)에 변경여지가 있는 부분(<> .ℓ)을 $$로 부분 추출한다.
+    변경부분($$)을 순회하며 applyList에 있는 교체한 요소를 삽입후 반환
+	
+	매개변수 정보
+	$p = parent 부모(변경하려는 html) 
+    applyList = $p 에서 <>에 변경될 플래그맨트들이 순서대로 정렬된 배열. 배열요소로 cond(), loop() 등이 들어온다.
+
+	(주의)$p는 이전 $.js 에 frag 함수로 인해 <> 가 <l></l> 자동 변환되어 들어옴.
+	*/
+
+	/*
+	변경여지가 있는 부분(<> .ℓ)을  정적 NodeList로 부분 추출
+	
+	태그 이름이 l 이거나 클래스 이름이 ℓ 인 경우 부분추출한다. 
+    (주의) $p.id  는 흔히 하는 html 의 id 가  아니며 추후 개발될 부분으로 설명 생략함 
+	*/
+	const $$ = [...$p.querySelectorAll(`l, .ℓ${$p.id ?? ''}`)];
+
 		$$.forEach(($, i) => {
-			//요소의 로컬이름이 l 인경우 <l></l>
-			if($.localName == 'l'){
-				// 선택된 부모 노드가 가지고 있는 노드를 새로운 텍스트 노드로 교체
-				$.replaceWith($ = new Text); 
-				//applyList 없으면 그대로 텍스트 노드로 
-				
+			if($.localName == 'l'){	// <l></l> 경우
+				$.replaceWith($ = new Text);  // <l></l> -> new Text 교체
+				//$$[i] = comp_timer($ = new Text)
 				$$[i] = applyList.shift()?.($) ?? $;
-				// console.log($$[i]);
+
+				// console.log(applyList.shift()?.($));
+				//$$[i] = comp(_, $, apply);
+				//$$[i] = {html`<span class=ℓ>`  apply}
 			}
 		})
 		return $$;
@@ -186,13 +220,57 @@ assign(self, {
     }
 
 	*/
-	cond: ($frag, fn) => $ => { // $?
+
+	//		$$[i] = applyList.shift()?.($) ?? $;
+
+	/*
+$ => { 
+	
+
+		console.log($);
+		return {
+			is: false,
+			$start: $,
+			$end: $,
+			apply(is){ //apply 함수에서 실행
+				//is 가 변경된 경우
+				if(this.is != (this.is = !!is)){
+					//is  true 
+					if(is){
+						const {$, apply, $start, $end} = setBind($frag, fn);
+						this.$start.before($);
+						this.$start.remove();
+						assign(this, {$start, $end}, (this.blockApply = apply)?.())
+					}else{
+						//is  false
+						blockRemove(this);
+						this.blockApply = null;
+					}
+				}else if(is){
+					assign(this, this.blockApply?.());
+				}
+			}
+		}
+	},
+	
+	
+	*/
+
+	
+	cond: ($frag, fn) => $ => { 
+		/*
+	   cond 함수  역할 
+
+	   : 조건이 맞으면 DOM 요소를 반환, 조건이 맞지않으면 DOM 요소를 지우는 함수를 반환한다.
+		*/
+
 		// console.log($);
 		return {
 			is: false,
 			$start: $,
 			$end: $,
-			apply(is){
+			apply(is){ //apply 함수에서 실행
+				// console.trace();
 				//is 가 변경된 경우
 				if(this.is != (this.is = !!is)){
 					//is  true 

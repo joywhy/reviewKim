@@ -1,4 +1,5 @@
 const KST_TIME = 32400000;
+
 const DATA = {
   my: {},
   no: 1,
@@ -49,30 +50,33 @@ const DATA = {
     ],
   ],
   endDate: new Date(new Date('2024-06-25') - KST_TIME), // T00:00:00Z
-  lat: 37.5525647, //?
-  lng: 127.1843589 //?
+  lat: 37.5525647, //위도 모집공고 위치 ->경기 하남시 미사강변서로 22 에코큐브지식산업센터 B106호
+  lng: 127.1843589 //경도 모집공고 위치
 }
+//함수
 Object.assign(self,{
   //카운트 다운 
-  comp_timer(_, apply){ //어떻게 들어오는 지 
+  comp_timer(_){ //_ = new Text
     let endDate, time, format;
     const $ = html`<span class=ℓ>`,
       $$ = ℓ($); //[span.ℓ]
 
-    (apply = (attr = {endDate, time, format}) => { //endDate ,time , format
+    const apply = (attr = {endDate, time, format}) => { //endDate ,time , format
+      // console.trace('comp_timer', format);
+
       ({endDate, time, format} = attr); 
        //() 로 감싼 이유
       //{endDate, time, format} 
       if(endDate) time = endDate - Date.now();
       update($$,{innerText: remainTime(time)});
       //update([span.ℓ],{innerText: `13d일 12:12:00`})
-    });
+    };
     setInterval(apply, 1000)
 
     return comp(_, $, apply);
   },
   //네이버지도
-  comp_map(_, apply){
+  comp_map(_, apply){ 
     let height, lat, lng, zoom;
     const $ = html`<div class="ℓ map"></div>`,
     $$ = ℓ($);
@@ -119,6 +123,7 @@ Object.assign(self,{
      button#google-oauth.ℓ
     ]
     */
+
     // console.log($$);
 
     async function login(type){
@@ -126,39 +131,58 @@ Object.assign(self,{
       (await import(`https:seu.ai/login/${type}.js`)).default((await req('key')).key);
       addEventListener('await login', loginHander, {once: true});
     }
+
     function loginHander({detail: {my, token}}){
       popupClose();
       cookie.my = token;
       DATA.my = my;
       self.apply();
     }
-
+    // console.log("동작");
     update($$,
       {onclick(){login('naver')}},
       {onclick(){login('google')}}
     );
-
     (apply = () => {});
     return comp(_, $, apply);
   }
 })
+/*
+PAGE 객체의 프로퍼티의 값은 웹사이트의 경로를 가르킨다.
+./ => ''
+/my => PAGE 객체의 my 함수를 실행한다.
+
+
+[참조] $.js  125line render함수  getPage함수 참고
+
+*/
 
 const PAGE = {
-  ''({
-    my,
-    dateList,
+  ''({ //'' -> ./ 경로에 해당하는 페이지
+    my,  
+    dateList,  //DATA.dateList로 인식 -> $.js  render함수 
     endDate,
     lng,
     lat
   }){
-    /*
-      <header>
-        <h1><a href="/" class="logo"><strong>리뷰.킴</strong> REVIEW.KIM</a></h1>
-        <button>로그인</button>
-      </header>
-    */
-    // <input type="search">
-  //<> 혹은 class=ℓ 인 것을 순서대로 들어간다.
+ /* 
+ $ = 부모가 되는 템플릿리터럴 변수
+
+ .ℓ = 랜더링이 필요한 부분 
+ <> = 리팩토링이 필요한 부분(구조변경여지가 있는부분)
+
+ 템프릿 리터럴 $ 작성시 공백또한 잡히기때문에 띄어쓰기 없이 한줄로 작성한다. 
+
+ -잘 작성한 예-
+ const $ = html `<header> <div class=container> <h1><a href=/ class=logo>... </header>`;
+ -잘못 작성한 예- 
+ const $ = html `<header> 
+ <div class=container> <h1><a href=/ class=logo>
+ ... </header>`; 
+
+ $$ =>  $ 중 변경점이 있는 <>   .ℓ 를 추출 및 알맞게 변경한 배열
+ */
+
     const $ = html`<header>
     <div class=container>
     
@@ -219,19 +243,16 @@ const PAGE = {
      <div class=announcementDate> 뷰어 발표기간 <span>
      6.20 - 6.26</span></div><div class=participation>
      <h3>참여 날짜 및 시간대</h3><div><div class=tagContainer>
-     <div class=tag>6월24일</div><div class=tag>6월25일</div>
-     <div class=tag>6월26일</div><div class=tag>6월27일</div><div class=tag>6월28일</div></div>- 1타임 오전 10:00 - 12:00 (총2시간)<br>- 2타임 오전 14:00 - 16:00 (총2시간)<br><span class=des>*날짜 선택후 1타임과 2타임 중 택 1</span></div></div><div class=cocktail><h3>🥳논알콜로 즐기는 홈파티🎉</h3> 논알콜 하이볼 시리즈! 논알콜 위스키 시럽을 활용한 음료 제조 체험 <ul><li>기본 시연 및 시음으로 3가지 음료</li><li>재료들을 나열해두고 자기만의 하이볼 만들어서 모두와 함께 맛보고 의견나누기</li></ul></div><div class=parking><h3>주차 지원 : 3시간</h3> 신청시 한팀당 최대 2명(신청자 포함)입니다.🥰 </div><img src=${IMG_DIR}/poster.png alt="모집 공고 포스터"></dd><dt>방문장소</dt><dd class=place><div class=address><em>도로명</em><span class=ℓ></span><button class=ℓ>복사</button></div><div class=address><em>지번</em><span class=ℓ></span><button class=ℓ>복사</button></div><></dd></dl></section><></main><footer><div class=container><div class=topFooter><h4>070-7630-1111</h4>평일 10:00 - 17:00 / 점심 시간 12:00 - 13:00<br>주말, 공휴일 제외</div><div class=bottomFooter><div><h6>개인정보처리방침 | 이용약관</h6>상호명: 리을컴퍼니 주소 : 경기 수원시 팔달구 고매로20번길 24 사업자등록번호: 183-42-00547<br>대표 : 박재천 이메일 :admin@lieul.com </div><a href=/ class=logo><img src=${IMG_DIR}/logo_kor_reviewKim.svg alt="리뷰 킴"><img src=${IMG_DIR}/logo_en_reviewKim.svg alt=reviewKim></a></div></div></footer>`
-    const $$ = ℓ($,
-    
+     <div class=tag>6월24일</div><div class=tag>6월25일</div><div class=tag>6월26일</div><div class=tag>6월27일</div><div class=tag>6월28일</div></div>- 1타임 오전 10:00 - 12:00 (총2시간)<br>- 2타임 오전 14:00 - 16:00 (총2시간)<br><span class=des>*날짜 선택후 1타임과 2타임 중 택 1</span></div></div><div class=cocktail><h3>🥳논알콜로 즐기는 홈파티🎉</h3> 논알콜 하이볼 시리즈! 논알콜 위스키 시럽을 활용한 음료 제조 체험 <ul><li>기본 시연 및 시음으로 3가지 음료</li><li>재료들을 나열해두고 자기만의 하이볼 만들어서 모두와 함께 맛보고 의견나누기</li></ul></div><div class=parking><h3>주차 지원 : 3시간</h3> 신청시 한팀당 최대 2명(신청자 포함)입니다.🥰 </div><img src=${IMG_DIR}/poster.png alt="모집 공고 포스터"></dd><dt>방문장소</dt><dd class=place><div class=address><em>도로명</em><span class=ℓ></span><button class=ℓ>복사</button></div><div class=address><em>지번</em><span class=ℓ></span><button class=ℓ>복사</button></div><></dd></dl></section><></main><footer><div class=container><div class=topFooter><h4>070-7630-1111</h4>평일 10:00 - 17:00 / 점심 시간 12:00 - 13:00<br>주말, 공휴일 제외</div><div class=bottomFooter><div><h6>개인정보처리방침 | 이용약관</h6>상호명: 리을컴퍼니 주소 : 경기 수원시 팔달구 고매로20번길 24 사업자등록번호: 183-42-00547<br>대표 : 박재천 이메일 :admin@lieul.com </div><a href=/ class=logo><img src=${IMG_DIR}/logo_kor_reviewKim.svg alt="리뷰 킴"><img src=${IMG_DIR}/logo_en_reviewKim.svg alt=reviewKim></a></div></div></footer>`
+    //ℓ함수 첫번째 인자= 부모 $ ,이후 인자 <>에 변경될 플래그맨트들  순서대로 작성
+     const $$ = ℓ($,
+    //
       cond(
       html`<a href=/my><img src=${IMG_DIR}/user.svg><span class=ℓ></span></a><a href=?logout>로그아웃</a>`, 
       $ => {
-        // $ ->
-        // $start -> 
-        // $end ->
-        // console.log($);
+        //html 컴포넌트 
     const {firstChild: $start, lastChild: $end} = $;
-    // console.log($start,$end);
+    console.log($start,$end);
     const $$ = ℓ($,); 
     
     return () => {
@@ -240,13 +261,10 @@ const PAGE = {
    }
     }
   ),
-
-
     cond(
       html`<a href=#login class=mainBtn>로그인</a><div class="blind popup"><article id=login><button class="close ℓ"></button><img src=${IMG_DIR}/logo_en_reviewKim.svg><></article></div>`, 
       
       $ => {
-
         // console.log(...$.childNodes); 
         //$ ->   <a href=#login class=mainBtn>로그인</a><div class="blind popup"><article id=login><button class="close ℓ"></button><img src=${IMG_DIR}/logo_en_reviewKim.svg><></article></div>`, 
       
@@ -255,15 +273,13 @@ const PAGE = {
     const $$ = ℓ($,comp_login);
     
     return () => {
-      update($$, {onclick(){popupClose()}},{});
+      update($$, {onclick(){popupClose()}},{}); //{} 빈객체의 존재의미
       return {$start, $end};
      } 
 
     }),
-
     comp_timer,
     comp_map,
-
     cond(
       html`<section class=blind>
       <form class=ℓ>
@@ -303,18 +319,39 @@ const PAGE = {
     );
     return {$start, $end};
     }
-    })
-    );
-    ;
+    }));
+    
+
+
+
     (async() => {
+      //해당페이지에 대한 동접자
       DATA.count = await req('count', {no: DATA.no});
       apply();
     })();
 
-    (self.apply = () =>
+    (self.apply = () => {
+   
+/*
+현재 $$ 값
+[
+{is: false, $start: text, $end: text, apply: ƒ},
+{is: true, $start: a.mainBtn, $end: div.blind.popup, apply: ƒ, blockApply: ƒ},
+{$start: span.ℓ, $end: span.ℓ, apply: ƒ},   <--- comp_timer 남은 시간
+p.ℓ,                                        <---  신청 인원
+p.ℓ,                                        <---  접수 기간
+a.mainBtn.ℓ,                                <--- 신청 버튼
+span.ℓ,
+button.ℓ, 
+span.ℓ, 
+button.ℓ,
+{$start: div.ℓ.map, $end: script, apply: ƒ},     <--- comp_map,
+{is: false, $start: text, $end: text, apply: ƒ}
+ ]
+*/
     update($$,
-    DATA.my.no,
-    !DATA.my.no,
+    DATA.my.no, //
+    !DATA.my.no, //is
     {format:`D일 H:I:S`,endDate:endDate},
     {innerText: DATA.count},
     {innerText:`- ${endDate.format('m.d', false)}`},
@@ -324,8 +361,8 @@ const PAGE = {
     {innerText:DATA.address[1]},
     {onclick(){copy(DATA.address[1])}},
     {lat:lat,lng:lng,zoom:15},
-    DATA.my.no && location.pathname.startsWith('/form')
-    ))();
+    DATA.my.no && location.pathname.startsWith('/form') //is
+    )})();
     return $;
   },
   my({my}){
