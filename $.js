@@ -31,7 +31,7 @@ assign(self, {
 	update($$, ...attrList){
 		console.log($$);
 		return $$.map(($, i) => {
-			//블럭단위로 객체화 되어 있는 상태
+			// 블럭단위로 객체화 되어 있는 상태
 			if('apply' in $){
 				const isPush = 'isPush' in $;
 				if(isPush) $.isPush = false;
