@@ -198,7 +198,7 @@ main {
   position: relative;
   justify-content: space-between;
 }
-/* section:not(.blind):nth-of-type(1) */
+/* blind 클래스가 없는 section 중 1번째 */
 main > section:not(.blind):nth-of-type(1) {
   position: sticky;
   width: 429px;
@@ -206,6 +206,7 @@ main > section:not(.blind):nth-of-type(1) {
   top: var(--header-height);
   padding: 50px 50px 0 0;
   border-right: 1px solid var(--color-gray-10);
+  border:  1px solid red;
 }
 section:not(.blind):nth-of-type(1) header {
   display: none;
@@ -254,7 +255,12 @@ main > section:not(.blind) {
   max-width: 710px;
   width: 100%;
   padding-top: 50px;
+
 }
+main > section {
+  border: 1px solid red;
+}
+/* 옆에 section card title */
 .articleTitle {
   /* overflow-y: hidden; */
   margin-top: 28px;
@@ -278,6 +284,7 @@ main > section:not(.blind) {
   color: var(--color-gray-50);
   margin-right: 10px;
 }
+
 .recruitment {
   display: flex;
   justify-content: right;
@@ -343,7 +350,7 @@ section:not(.blind):nth-of-type(1) .buttonList .mainBtn {
   flex-grow: 1;
   margin-right: 0px;
 }
-
+/* 오른쪽 section */
 section header {padding-bottom: 20px;}
 section header div {
   height: 27px;

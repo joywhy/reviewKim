@@ -227,7 +227,9 @@ assign(self, {
 	loop: ($frag, fn) => $ => ({
 		$start: $,
 		$end: $,
-		apply(list, len){
+		apply(list, len){ 
+			//list =["하남데이트","하남카페", "카페창업","하남가볼만한곳","커피머신기"]
+			//len = 5
 			const map = this.map;
 			const newMap = new Map;
 			if(len){
@@ -240,7 +242,8 @@ assign(self, {
 				this.map = null
 				return;
 			}
-
+            console.log(list);
+            console.log(len);
 			const lastIndex = len - 1;
 			let $start = this.$start;;
 			let add = $start.before.bind($start);

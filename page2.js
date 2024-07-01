@@ -1,28 +1,29 @@
 const DATA = {
     isLogged:false,
-    my:{}
+    my:{},
+    keyword: ["하남데이트","하남카페", "카페창업","하남가볼만한곳","커피머신기"]
 }
 
 Object.assign(self,{
-    comp_header(_){
-        const $ = html`<header><div class=container><h1><a href=/ class=logo><img src=img/logo_kor_reviewKim.svg alt=리뷰킴> <img src=img/logo_en_reviewKim.svg alt=reviewkim></a></h1> <> </header>`;
-        const $$ = ℓ($, comp_rightHeader)
-        const apply = () => { 
-            update($$)
-        } 
-        return comp(_, $, apply);
-    },
+    //main button 컴포넌트
     comp_mainBtn(_){
-    let text, width, height, onclick;  // 전역함수로 선언될수 있기때문에  apply로 받아오는 변수를 컴포넌트내부에 꼭 선언할것
     const $ = html `<button class="ℓ mainBtn"></button>`;
     const $$ = ℓ($);
-    const apply = (attr = {text, width, height, onclick}) => { 
-        ({text, width = '100%', height = '100%', onclick} = attr); 
-        update($$, {innerText: text, style: {width, height}, onclick})
+    const apply = ( {text, width= '100%', height= '100%', style = {}, onclick}) => { 
+        update($$, {innerText: text, style: {...style, width, height}, onclick})
     } 
-
-    return comp(_,$,apply);
+     return comp(_,$,apply);
     },
+    //header 컴포넌트 
+    comp_header(_){
+    const $ = html`<header><div class=container><h1><a href=/ class=logo><img src=img/logo_kor_reviewKim.svg alt=리뷰킴> <img src=img/logo_en_reviewKim.svg alt=reviewkim></a></h1> <> </header>`;
+    const $$ = ℓ($, comp_rightHeader)
+    const apply = () => { 
+         update($$)
+        } 
+     return comp(_, $, apply);
+    },
+    //right header 컴포넌트
     comp_rightHeader(_){
       let isModal=false;
       const $ = html`<div class="rightSide center"><><></div>`;
@@ -33,11 +34,11 @@ Object.assign(self,{
         $ => {
             const {firstChild: $start} = $;
             const $$ = ℓ($,
+                //로그인 버튼
                 comp_mainBtn, 
                 //로그인 버튼 클릭시 모달창
                 cond(
                 html`<div class="modalWrap ℓ"></div><article id=login><button class=" close ℓ"></button><img src=${IMG_DIR}/logo_en_reviewKim.svg>   <button id="naver-oauth" class="ℓ"><img src="${IMG_DIR}/naverloginbutton.svg" alt="네이버로그인"></button><button id="google-oauth" class="ℓ"><img src="${IMG_DIR}/googleloginbutton.svg" alt="구글로그인"></button> </article>`, 
-
                 $ => {
                     const {firstChild: $start, lastChild: $end} = $;
                     const $$ = ℓ($);
@@ -45,28 +46,30 @@ Object.assign(self,{
                         removeEventListener('await login', loginHander);
                         (await import(`https:seu.ai/login/${type}.js`)).default((await req('key')).key);
                         addEventListener('await login', loginHander, {once: true});
-                      }
-                      function loginHander({detail: {my, token}}){
+                    }
+                    function loginHander({detail: {my, token}}){
                         isModal=false;
                         cookie.my = token;
                         DATA.my = my;
                         DATA.isLogged = true;
                         self.apply();
-                      }
+                    }
 
                     return () => {
                         update($$, 
+                        //modalbackground
                         {onclick(){
                             isModal=false;
                             apply(); 
-                        
                         }},
+                        //close btn
                         {onclick(){
                             isModal=false;
                             apply(); 
-                       
                         }},
+                        //소셜 로그인 naver
                         {onclick(){login('naver')}},
+                        //소셜 로그인 google
                         {onclick(){login('google')}}
                         ); 
                         return {$start, $end};
@@ -74,14 +77,11 @@ Object.assign(self,{
                 })
             ); 
             return () => {
-                console.log($$);
-                // console.trace($$, isModal);
                 update($$, {
                     text: '로그인',
                     width: '100px',
                     onclick(){
                         isModal = true;
-                        // console.log("동작 1");
                         apply();
                     },
                 }, isModal)
@@ -90,7 +90,6 @@ Object.assign(self,{
         }),
         //로그인시  comp_rightheader 
         cond(
-            // html`<a href=/my><img src=${IMG_DIR}/user.svg>ㅇㄹㅇㄹ</a><a href=?logout>로그아웃</a>`, 
             html`<a href=/my><img src=${IMG_DIR}/user.svg><span class=ℓ></span></a><a href=?logout>로그아웃</a>`, 
             $ => {
                 const {firstChild: $start, lastChild: $end} = $;
@@ -106,6 +105,58 @@ Object.assign(self,{
      };
 
     return comp(_, $, apply);
+    },
+    //card 형태의 right section
+    comp_card(_){
+     const $ = html`<section class="card">card</section>`;
+     const apply = ( ) => {  } 
+     return comp(_,$,apply);
+    },
+    //recruit section
+    comp_recruit(_){
+    const $  = html`<section class="recruit"><><></section>`;
+    const $$ = ℓ($,
+        comp_recruit_header,
+        loop(
+         html`<span class ="tag ℓ"></span>`,
+        $ => {
+        const $$ = ℓ($);
+        return (item, i, {$start, $end}) => { 
+          
+        update($$,{innerText:`#${item}`});
+        return {$start, $end, i};
+       }
+      },
+    ));
+
+
+    const apply = ( ) => {
+        update($$,{},DATA.keyword);
+      } 
+    return comp(_,$,apply);
+    },
+    comp_recruit_header(_){
+        const $  = html`<header><div class="buttonList"><><></div><h1>[경기 / 하남] 마이 논알콜 하이볼 리스트</h1><div class="des">3가지 논알콜 하이볼 시연 및 시음</div></header>`;
+        const $$ = ℓ($,
+            comp_mainBtn,
+            comp_mainBtn,
+        );
+        const apply = ()=>{
+        update($$,{
+            text: 'B',
+            width: '30px',
+            onclick(){},
+        },
+        {
+            text: '방문형',
+            width: '60px',
+            style:{"background-color":"gray"},
+            onclick(){},
+        },
+    );
+
+        }
+        return comp(_,$,apply);
     }
 
 });
@@ -113,9 +164,11 @@ Object.assign(self,{
 
 const PAGE = {
 ''(){
- const $= html`<><div class="container"></div>`;
+ const $= html`<><main class="container"><><></main>`;
  const $$ = ℓ($,
- comp_header 
+ comp_header,
+ comp_card,
+ comp_recruit
  );
 
  (self.apply = () => {

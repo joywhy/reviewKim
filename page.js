@@ -251,7 +251,11 @@ const PAGE = {
     
     return () => {
     update($$,
-    {onsubmit(){event.preventDefault();const {date: {value :dateList}, url: {value :url}} = this.elements;if(dateList.length) req('req', {no: DATA.no, dateList: dateList.join(','), url}).then(() => {alert('신청이 완료되었습니다');this.querySelector('.close').click()})}},
+    {onsubmit(){
+      event.preventDefault();
+      const {date: {value :dateList},
+       url: {value :url}} = this.elements;
+       if(dateList.length) req('req', {no: DATA.no, dateList: dateList.join(','), url}).then(() => {alert('신청이 완료되었습니다');this.querySelector('.close').click()})}},
     {href:`/${location.pathname.slice(1).split('/').slice(1).join('/')}`},
     dateList   //dateList 가 들어감
     );
