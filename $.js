@@ -26,17 +26,19 @@ assign(self, {
 		return tpl;
 	},
 	html: (text, ...val) => tpl(frag(String.raw({raw: text}, ...val))).cloneNode(true), // HTML 템플릿을 생성하고 클론을 반환
-	//$$ [text, text, text, p.ℓ, p.ℓ, a.mainBtn.ℓ, span.ℓ, button.ℓ, span.ℓ, button.ℓ, text, text]
-    //attrList `이은희님`
+	
 	update($$, ...attrList){
-		console.log($$);
 		return $$.map(($, i) => {
 			// 블럭단위로 객체화 되어 있는 상태
 			if('apply' in $){
-				const isPush = 'isPush' in $;
+				//$ 객체에 isPush 속성이 있니?
+
+				const isPush = 'isPush' in $; //false
+			    // console.log(isPush);
 				if(isPush) $.isPush = false;
 				$ = $.apply(attrList[i]) ?? $;
 				if(isPush) $.isPush = true;
+			
 			}
 			if(!($ instanceof Node)) return $;
 			/*
@@ -47,11 +49,11 @@ assign(self, {
 			}
 			*/
 			try{
-				const prop = attrList[i];
+				const prop = attrList[i];//  {innerText: `count : ${count}`},
 			
-				keys(prop).forEach(k => {
+				keys(prop).forEach(k => {//k= innerText
 					// console.log(k);//함수일경우 함수명이 key-> onclick
-					if(typeof prop[k] == 'object'){
+					if(typeof prop[k] == 'object'){ //배열 또는 object
                          /*
 						 태그 인라인스타일 적용
 						 예시 {style:['font-size': '1px', color:'black',display: isNone ? 'none' : null]} 
@@ -84,6 +86,7 @@ assign(self, {
 					//변경점이 없었을 때 
 					if(($.getAttribute?.(k) || $[k]) === prop[k]) return;
 					// 속성과 프로퍼티에 대한 명칭이 다른기 때문에 제대로 가져오지 않았기 때문 
+					
 					/*
 					ariaPressed
 
@@ -163,11 +166,8 @@ assign(self, {
 			if($.localName == 'l'){	// <l></l> 경우
 				$.replaceWith($ = new Text);  // <l></l> -> new Text 교체
 				//$$[i] = comp_timer($ = new Text)
+				//
 				$$[i] = applyList.shift()?.($) ?? $;
-
-				// console.log(applyList.shift()?.($));
-				//$$[i] = comp(_, $, apply);
-				//$$[i] = {html`<span class=ℓ>`  apply}
 			}
 		})
 		return $$;
@@ -195,18 +195,16 @@ assign(self, {
 	cond: ($frag, fn) => $ => { 
 		/*
 	   cond 함수  역할 
-
-	   : 조건이 맞으면 DOM 요소를 반환, 조건이 맞지않으면 DOM 요소를 지우는 함수를 반환한다.
+	   :조건부 렌더링 
 		*/
-
-		// console.log($);
+		
 		return {
 			is: false,
 			$start: $,
 			$end: $,
 			apply(is){ //true
 				// is 가 변경했을때  
-				if(this.is != (this.is = !!is)){
+				if(this.is != (this.is = !!is)){ //
 					//is  true 
 					if(is){
 						const {$, apply, $start, $end} = setBind($frag, fn);
@@ -218,6 +216,7 @@ assign(self, {
 						blockRemove(this);
 						this.blockApply = null;
 					}
+				//is 가 변경되지 않았고 true 라면 
 				}else if(is){
 					assign(this, this.blockApply?.());
 				}

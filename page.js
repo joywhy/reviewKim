@@ -1,4 +1,4 @@
-const KST_TIME = 32400000;
+const KST_TIME = 32400000; //DATA 객체 외부에 있는 이유
 
 const DATA = {
   my: {},
@@ -223,7 +223,8 @@ const PAGE = {
       <a class="close ℓ"></a>
       <span>체험단 신청하기</span>
       <h1>[경기 / 하남] 마이 논알콜 하이볼 리스트</h1>
-      <div class=vote><em>복수선택</em><></div>
+      <div class=vote><em>복수선택</em>
+      <></div>
       <label>리뷰 작성할 블로그 주소<input name=url required=true></label>
       <div class=policy><span>유의사항 및 개인정보 활용</span><label>
       <input type=checkbox required=true> 체험단 미션 수행 및 유의사항, 개인정보 제3자 제공에 동의합니다.</label></div>
@@ -237,11 +238,11 @@ const PAGE = {
        $ => {
     const $$ = ℓ($,);
     
-    return (item, i, {$start, $end}) => {
+    return (item, i, {$start, $end}) => { //i 갯수
     update($$,
-    {value:i},
-    {innerText:`${i % 2 + 1}타임 ${Math.floor((item[1] - item[0]) / 3600000) % 24}시간`},
-    {innerText:`${item[0].format('D일 (w) H:I', false)} - ${item[1].format('H:I', false)}`}
+    {value:i}, //input value 값 ?
+    {innerText:`${i % 2 + 1}타임 ${Math.floor((item[1] - item[0]) / 3600000) % 24}시간`},  //1타임 두시간
+    {innerText:`${item[0].format('D일 (w) H:I', false)} - ${item[1].format('H:I', false)}`} //24일 (월) 10:00 - 12:00
     );
     return {$start, $end, i};
       }
@@ -252,7 +253,7 @@ const PAGE = {
     update($$,
     {onsubmit(){event.preventDefault();const {date: {value :dateList}, url: {value :url}} = this.elements;if(dateList.length) req('req', {no: DATA.no, dateList: dateList.join(','), url}).then(() => {alert('신청이 완료되었습니다');this.querySelector('.close').click()})}},
     {href:`/${location.pathname.slice(1).split('/').slice(1).join('/')}`},
-    dateList
+    dateList   //dateList 가 들어감
     );
     return {$start, $end};
     }
@@ -401,19 +402,26 @@ const $$ = ℓ($,
 	}
 	update($$,
 		DATA.my.no,
-		!DATA.my.no, {
+		!DATA.my.no,
+     {
 			src: DATA.my.memo
-		}, {
+		}, 
+    {
 			innerText: DATA.my.nick
-		}, {
+		}, 
+    {
 			innerText: DATA.my.name
-		}, {
+		},
+     {
 			innerText: DATA.my.gender
-		}, {
+		}, 
+    {
 			innerText: DATA.my.mail
-		}, {
+		}, 
+    {
 			innerText: DATA.my.birthday
-		}, {
+		}, 
+    {
 			innerText: DATA.my.tel
 		}
 	)

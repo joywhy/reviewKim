@@ -7,7 +7,7 @@ Object.defineProperties(self, {
 	// INIT_MAP: {value: new Map},
 	// COMP_MAP: {value: new Map},
 	DIR: {value: location.protocol == 'https:' ? '' : '.'},
-	// COMP_DIR: {get(){return `${DIR}/comp`}},
+  COMP_DIR: {get(){return `${DIR}/comp`}},
 	IMG_DIR: {get(){return `${DIR}/img`}}, //https ->  /img   아니면 ./img
 	DB_HOST: {value: 'db.review.kim'},  
 	DELAY_LIST: {value: new Map},
@@ -21,7 +21,7 @@ Object.defineProperty(Array.prototype, 'remove', {
 
     //const isSearch =false;
     // [].filter((el,idx,arr)=>{  
-    //   if(el ===o && !isSearch){
+    //   if(el ===o && !isSearch){ 
     //    isSearch=true;
     //    return ;
     //   }
@@ -190,7 +190,15 @@ function delay(_, $){
 };
 //웹소켓 및 데이터 처리 
 Object.assign(self, {
-
+  // compLoad(...nameList){
+  //   return nameList.map(async name => {
+  //         self[`comp_${name}`] = new Function('_', 'apply', `const push = typeof this == 'function' ? attr => {
+  //            c.isPush = false;
+  //            this(attr);
+  //            c.isPush = true
+  //         } : null;${await (await fetch(`${self.COMP_DIR || '.'}/${name}.js`)).text()};\nc = comp(_, $, apply);c.isPush = !!push;return c;`);
+  //   });
+  // },
   await_i: 1,
   res(i, data){ //어떤식으로 들어오는 지 
     //type 이름이 await 1? 
@@ -202,6 +210,8 @@ Object.assign(self, {
     function: _ => _()   //함수가 들어올 경우가 있나?
   },
   async onready(){
+    // await Promise.all(compLoad('user'));
+
     cookie.my &&= cookie.my; //cookie.my=cookie.my &&cookie.my;
 
     await import('https:seu.ai/brotli.js');
