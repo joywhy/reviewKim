@@ -154,6 +154,7 @@ Object.assign(self,{
             onclick(){},
         },
     );
+//..
 
         }
         return comp(_,$,apply);
