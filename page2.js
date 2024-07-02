@@ -1,7 +1,14 @@
 const DATA = {
     isLogged:false,
     my:{},
-    keyword: ["하남데이트","하남카페", "카페창업","하남가볼만한곳","커피머신기"]
+    recruit :{
+        no:1,
+        title: "[인천 / 연수구] 케이슨 24 베이커리 카페",
+        desc : '[2인제한] 시그니처 핸드드립 원데이 클래스',
+        service :"핸드드립 원데이 클래스 + 디져트 3종 택1",
+        keyword : ["디져트 맛집","인청 카페","케이슨 24"],
+        
+    }
 }
 
 Object.assign(self,{
@@ -38,7 +45,7 @@ Object.assign(self,{
                 comp_mainBtn, 
                 //로그인 버튼 클릭시 모달창
                 cond(
-                html`<div class="modalWrap ℓ"></div><article id=login><button class=" close ℓ"></button><img src=${IMG_DIR}/logo_en_reviewKim.svg>   <button id="naver-oauth" class="ℓ"><img src="${IMG_DIR}/naverloginbutton.svg" alt="네이버로그인"></button><button id="google-oauth" class="ℓ"><img src="${IMG_DIR}/googleloginbutton.svg" alt="구글로그인"></button> </article>`, 
+                html`<div class="modalWrap ℓ"></div><article id=login><button class=" close ℓ"></button><img class="title" src=${IMG_DIR}/logo_en_reviewKim.svg>   <button id="naver-oauth" class="ℓ"><img src="${IMG_DIR}/naverloginbutton.svg" alt="네이버로그인"></button><button id="google-oauth" class="ℓ"><img src="${IMG_DIR}/googleloginbutton.svg" alt="구글로그인"></button> </article>`, 
                 $ => {
                     const {firstChild: $start, lastChild: $end} = $;
                     const $$ = ℓ($);
@@ -117,26 +124,16 @@ Object.assign(self,{
     const $  = html`<section class="recruit"><><></section>`;
     const $$ = ℓ($,
         comp_recruit_header,
-        loop(
-         html`<span class ="tag ℓ"></span>`,
-        $ => {
-        const $$ = ℓ($);
-        return (item, i, {$start, $end}) => { 
-          
-        update($$,{innerText:`#${item}`});
-        return {$start, $end, i};
-       }
-      },
-    ));
-
+        comp_recruit_content
+    );
 
     const apply = ( ) => {
-        update($$,{},DATA.keyword);
+        update($$);
       } 
     return comp(_,$,apply);
     },
     comp_recruit_header(_){
-        const $  = html`<header><div class="buttonList"><><></div><h1>[경기 / 하남] 마이 논알콜 하이볼 리스트</h1><div class="des">3가지 논알콜 하이볼 시연 및 시음</div></header>`;
+        const $  = html`<header><div class="buttonList"><><></div><h1>[경기 / 하남] 마이 논알콜 하이볼 리스트</h1><div class="des subTitle_30">3가지 논알콜 하이볼 시연 및 시음</div></header>`;
         const $$ = ℓ($,
             comp_mainBtn,
             comp_mainBtn,
@@ -160,6 +157,28 @@ Object.assign(self,{
 
         }
         return comp(_,$,apply);
+    },
+    comp_recruit_content(_){
+        const $ = html`<dl class="service"><dt class="subTitle_20">제공 서비스</dt><dd >핸드드립 원데이 클래스 + 디져트 3종 택1</dd></dl><dl class="keyword"><dt class="subTitle_20 ">키워드</dt><dd>
+        <></dd></dl>`;
+         const $$ = ℓ($,
+            loop(
+             html`<span class ="tag ℓ"></span>`,
+            $ => {
+            const $$ = ℓ($);
+            return (item, i, {$start, $end}) => { 
+              
+            update($$,{innerText:`#${item}`});
+            return {$start, $end, i};
+           }
+          },
+        ));
+        const keyword =  ["하남데이트","하남카페", "카페창업","하남가볼만한곳","커피머신기"];
+      
+        const apply = ( ) => { 
+            update($$,keyword);
+         }; 
+    return comp(_,$,apply);
     }
 
 });

@@ -242,8 +242,6 @@ assign(self, {
 				this.map = null
 				return;
 			}
-            console.log(list);
-            console.log(len);
 			const lastIndex = len - 1;
 			let $start = this.$start;;
 			let add = $start.before.bind($start);

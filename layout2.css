@@ -23,6 +23,7 @@ body {
   background-color: var(--color-white);
   line-height: 1.4;
   color: var(--color-black);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 small {
     color: var(--color-gray-30);
@@ -49,10 +50,10 @@ small {
 .shadowBox {
   box-shadow: 0 3px 20px rgba(0, 0, 0, 0.075), 0 3px 20px rgba(0, 0, 0, 0.069);
 }
+
 button {
   cursor: pointer;
   border-radius: 5px;
-  border: 1px solid var(--color-gray-10);
   background-color: #fff;
   color: inherit;
 }
@@ -76,10 +77,30 @@ button.dangerBtn {
   border-radius: 5px;
   padding: 4px;
 }
-.subTitle_20 {
-  font-size: 16px;
-  font-weight: ExtraBold;
+/* font */
+.title_20 {
+  font-family: "Pretendard Variable";
+  font-size: 20px;
+  font-weight: Light;
+
 }
+.subTitle_20 {
+  font-family:"Pretendard Variable";
+  font-size: 16px;
+  /* font-weight: ExtraBold; */
+  font-weight: Bold;
+}
+.subTitle_30 {
+  font-family:"Pretendard Variable";
+  font-size: 13px;
+  font-weight: "semiBold";
+}
+.banner_heading {
+  font-family:"Pretendard Variable";
+  font-size: 24px;
+  font-weight: "Bold";
+}
+
 /* header */
 body > header {
   position: sticky;
@@ -102,11 +123,7 @@ header > .container {
     display: flex;
     align-items: center;
 }
-header  .mainBtn {
-  /* height: 100%; */
-  /* margin-left: 20px; */
-  /* border: 1px solid red; */
-}
+/* 로그인버튼 클릭시 모달창 */
 .modalWrap {
   position: fixed;
   left: 0;
@@ -127,10 +144,10 @@ header article#login {
   border-radius: 20px;
 
 }
-header article#login img {
-  /* position: absolute;
-  left: 50%;
-  transform: translateX(-50%); */
+
+header article#login img.title {
+  margin-top: 40px;
+
 }
 header article#login button{
   position: absolute;
@@ -143,9 +160,14 @@ header article#login button#google-oauth{
 }
 header article#login button.close {
   position: absolute;
-  top:10px;
+  top:40px;
  left: 370px;
+ width: 20px;
+ height: 20px;
  transform: rotate( 45deg );
+ background-color: #000000;
+ z-index: 30;
+
 }
 #modalWrap {
   position: fixed;
@@ -158,37 +180,9 @@ header article#login button.close {
   overflow: auto;
   background-color: #00000076;
   backdrop-filter: blur(5px);
-  /* display: none; */
-  border: 1px solid red;
+
 }
 
-#modalBody {
-  width: 400px;
-  height: 600px;
-  padding: 30px 30px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 20px;
-}
-#modalBody img {
-  margin-top: 20px;
-}
-#closeBtn {
-  float: right;
-  font-weight: bold;
-  color: #777;
-  font-size: 25px;
-  cursor: pointer;
-}
-
-#modalBody button {
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-#modalBody button#naver-oauth {
-  margin-top: 140px;
-}
 /* main */
 main {
   display: flex;
@@ -211,8 +205,45 @@ section.recruit {
 }
 section.recruit header .buttonList {
 display: flex;
+
 width: auto;
+
 }
 section.recruit header h1 {
   margin-top: 25px;
+  font-size: 20px;
+  color: var(--color-gray-70);
+}
+section.recruit header .des {
+  color:var(--color-gray-50);
+  margin-top: 10px;
+
+}
+section.recruit dl {
+  color: var(--color-gray-70);
+  margin-top: 20px;
+}
+section.recruit dl.service {
+  margin-top: 65px;
+}
+section.recruit dl.service dd {
+  margin-left: 130px;
+}
+section.recruit dl.keyword dd {
+  display: flex;
+  margin-left: 130px;
+  /* border: 1px solid red; */
+  height: auto;
+  flex-wrap: wrap;
+
+}
+section.recruit dl.keyword  span {
+  background-color: var(--color-gray-10);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 13px;
+
+  padding: 5px;
+  margin-right: 20px;
+  margin-bottom: 10px;
 }
