@@ -167,9 +167,7 @@ header article#login button.close {
   height: 600px;
   padding: 30px 30px;
   margin: 0 auto;
-  /* border: 1px solid #777; */
   background-color: #fff;
-
   border-radius: 20px;
 }
 #modalBody img {
@@ -202,16 +200,19 @@ main > section.card {
   width: 35%;
   height: 400px;
   border-radius: 20px;
-  /* border : 1px solid black; */
   padding-top: 65px;
 }
 /* 오른쪽 card 형태의 section */
-main > section.recruit {
+section.recruit {
   width: 65%;
-
   border-left: 1px solid var(--color-gray-10);
   padding-top: 65px;
   padding-left: 20px;
- /* align-items: center; */
-
+}
+section.recruit header .buttonList {
+display: flex;
+width: auto;
+}
+section.recruit header h1 {
+  margin-top: 25px;
 }

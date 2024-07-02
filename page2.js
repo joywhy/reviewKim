@@ -145,12 +145,15 @@ Object.assign(self,{
         update($$,{
             text: 'B',
             width: '30px',
+            height:'27px',
+            style:{display: "flex","justify-content": "center","align-items": "center"},
             onclick(){},
         },
         {
             text: '방문형',
             width: '60px',
-            style:{"background-color":"gray"},
+            height:'27px',
+            style:{"background-color":`var(--color-gray-10)`,  "font-size": "13px",color:`var(--color-gray-70)`,display: "flex","justify-content": "center","align-items": "center","margin-left":'5px'},
             onclick(){},
         },
     );

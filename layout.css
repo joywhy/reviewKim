@@ -210,11 +210,12 @@ main > section:not(.blind):nth-of-type(1) {
 }
 section:not(.blind):nth-of-type(1) header {
   display: none;
+
 }
 section:not(.blind):nth-of-type(1) .slide {
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0);
-  /* overflow-x: scroll; */
+
 }
 section:not(.blind):nth-of-type(1) .slide .slideContainer {
   position: relative;
@@ -222,7 +223,7 @@ section:not(.blind):nth-of-type(1) .slide .slideContainer {
   height: 275px;
   overflow: hidden;
   box-sizing: border-box;
-  /* border: 1px solid red; */
+  
 }
 section:not(.blind):nth-of-type(1) .slide .slideContainer .imgContainer {
   position: absolute;
