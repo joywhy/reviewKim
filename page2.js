@@ -161,7 +161,8 @@ Object.assign(self,{
     },
     comp_recruit_content(_){
         const $ = html`<dl class="service"><dt class="subTitle_20">제공 서비스</dt><dd >핸드드립 원데이 클래스 + 디져트 3종 택1</dd></dl><dl class="keyword"><dt class="subTitle_20 ">키워드</dt><dd>
-        <></dd></dl>`;
+        <></dd></dl><dl class="guide"><dt class="subTitle_20">안내</dt><dd><p class="danger">직접 매장에 예약하여 방문 후 리뷰를 작성하는 캠페인입니다</p><span>-타인의 대리 체험이 불가능합니다.</span> 
+        <p><h3>1.방문 안내🙇‍♂️</h3></p></dd></dl>`;
          const $$ = ℓ($,
             loop(
              html`<span class ="tag ℓ"></span>`,
